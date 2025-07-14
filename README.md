@@ -113,16 +113,13 @@ Make sure you have Node.js and npm installed on your machine.
 
 ## 🗺️ Roadmap
 
-- [x] **Phase 1: Project Foundation** - Setup, Theming, i18n
-- [x] **Phase 2: Core Layout** - Sidebar, Navbar, Responsiveness
-- [ ] **Phase 3: Component & Page Development**
-  - [ ] Build reusable UI component library
-  - [ ] Develop Feed, Laws, and Discussions pages
-  - [ ] Implement advanced document view with split-screen
-- [ ] **Phase 4: Backend Integration & Finalization**
-  - [ ] Connect to Golang API endpoints
-  - [ ] Implement user authentication
-  - [ ] Final testing and optimization
+- [x] **Phase 1: Project Foundation and Layout** - Setup, Theming, i18n
+- [ ] **Phase 2: Component & Page Development**
+- [ ] **Phase 3: Backend Integration**
+- [ ] **Phase 4: Advanced Features like Document Scanning and Version Control**
+- [ ] **Phase 5: Community Features and Notifications**
+- [ ] **Phase 6: Testing, Optimization, and Deployment**
+- [ ] **Phase 7: Documentation and Open Source Release**
 
 See the open [issues](https://github.com/your_username/niyam/issues) for a full list of proposed features (and known issues).
 
