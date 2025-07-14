@@ -11,7 +11,7 @@ export default function AnalyticsPage() {
         platform's usage, user engagement, and other relevant metrics.
       </p>
       <Link href="/" className="text-primary hover:underline">
-        &larr; Back to Home
+        Back to Home
       </Link>
     </div>
   );

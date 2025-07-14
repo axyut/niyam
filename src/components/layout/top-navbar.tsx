@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useTranslations } from "next-intl";
-import { Search, User, Settings, LogOut } from "lucide-react";
+import { Search } from "lucide-react";
 import { ThemeToggle } from "../ui/theme-toggle";
 import { LanguageSwitcher } from "../ui/language-switcher";
 

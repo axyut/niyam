@@ -63,7 +63,7 @@ export function LeftSidebar() {
                 >
                   <item.icon className="h-5 w-5" />
                   {isSidebarOpen && (
-                    <span className="ml-4">{t(item.labelKey as any)}</span>
+                    <span className="ml-4">{t(item.labelKey as string)}</span>
                   )}
                 </Link>
               </li>
