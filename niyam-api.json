@@ -1,0 +1,1880 @@
+{
+  "components": {
+    "schemas": {
+      "AdminAuthOutputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/AdminAuthOutputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "admin": {
+            "$ref": "#/components/schemas/AdminOutput",
+            "description": "Basic admin information"
+          },
+          "token": {
+            "description": "JWT token for authenticated requests",
+            "examples": [
+              "abcd1234efgh5678ijkl9012mnop3456qrst7890uvwx"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "admin"
+        ],
+        "type": "object"
+      },
+      "AdminOutput": {
+        "additionalProperties": false,
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/AdminOutputBody"
+          }
+        },
+        "required": [
+          "Body"
+        ],
+        "type": "object"
+      },
+      "AdminOutputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/AdminOutputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "address": {
+            "description": "Admin's address, optional",
+            "examples": [
+              "Chitwan, Nepal"
+            ],
+            "type": "string"
+          },
+          "adminname": {
+            "description": "Admin's unique adminname, alphanumeric and underscores only, 3-50 chars",
+            "examples": [
+              "axyut"
+            ],
+            "type": "string"
+          },
+          "bio": {
+            "description": "Admin's bio or description, optional",
+            "examples": [
+              "Backend Developer from Nepal."
+            ],
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "Creation timestamp of the admin record",
+            "examples": [
+              "2023-10-01T12:00:00Z"
+            ],
+            "format": "date-time",
+            "type": "string"
+          },
+          "email": {
+            "description": "Unique Email for the admin",
+            "examples": [
+              "mail@achyutkoirala.com.np"
+            ],
+            "type": "string"
+          },
+          "firstName": {
+            "description": "First name of the admin, optional",
+            "examples": [
+              "Achyut"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "description": "Unique identifier for the admin",
+            "examples": [
+              "654a93c7e0f2f3f4c5d6e7f8"
+            ],
+            "type": "string"
+          },
+          "imageUrl": {
+            "description": "URL of the admin's profile image, optional",
+            "examples": [
+              "https://picsum.photos/200.jpg"
+            ],
+            "type": "string"
+          },
+          "lastName": {
+            "description": "Last name of the admin, optional",
+            "examples": [
+              "Koirala"
+            ],
+            "type": "string"
+          },
+          "phone": {
+            "description": "Admin's phone number, optional",
+            "examples": [
+              "+9779800000000"
+            ],
+            "type": "string"
+          },
+          "preferences": {
+            "additionalProperties": {},
+            "description": "Admin preferences or settings, optional",
+            "examples": [
+              {
+                "notifications": true,
+                "theme": "dark"
+              }
+            ],
+            "type": "object"
+          },
+          "role": {
+            "description": "Admin's role, one of 'admin', 'professional', 'admin', 'superadmin'",
+            "examples": [
+              "admin"
+            ],
+            "type": "string"
+          },
+          "socialLinks": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Admin's social media links, optional",
+            "examples": [
+              {
+                "github": "https://github.com/axyut",
+                "linkedin": "https://linkedin.com/in/axyut"
+              }
+            ],
+            "type": "object"
+          },
+          "updatedAt": {
+            "description": "Last update timestamp of the admin record",
+            "examples": [
+              "2023-10-01T12:00:00Z"
+            ],
+            "format": "date-time",
+            "type": "string"
+          },
+          "verified": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "description": "desc:Verification status for different methods, optional",
+            "examples": [
+              {
+                "email": true,
+                "phone": false
+              }
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "adminname",
+          "email",
+          "role",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object"
+      },
+      "CreateAdminInputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/CreateAdminInputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "address": {
+            "description": "desc:Admin's address, optional",
+            "examples": [
+              "Chitwan, Nepal"
+            ],
+            "type": "string"
+          },
+          "adminname": {
+            "description": "minLength:3,maxLength:50,pattern:^[a-zA-Z0-9_]+$, desc:Unique adminname, alphanumeric and underscores only, 3-50 chars",
+            "examples": [
+              "axyut"
+            ],
+            "type": "string"
+          },
+          "bio": {
+            "description": "desc:Admin's bio or description, optional",
+            "examples": [
+              "Backend Developer from Nepal."
+            ],
+            "type": "string"
+          },
+          "email": {
+            "description": "minLength:5,maxLength:100, desc:Admin's email address",
+            "examples": [
+              "mail@achyutkoirala.com.np"
+            ],
+            "type": "string"
+          },
+          "firstName": {
+            "description": "desc:Admin's first name, optional",
+            "examples": [
+              "Achyut"
+            ],
+            "type": "string"
+          },
+          "imageUrl": {
+            "description": "desc:URL of the admin's profile image, optional",
+            "examples": [
+              "https://picsum.photos/200.jpg"
+            ],
+            "type": "string"
+          },
+          "lastName": {
+            "description": "desc:Admin's last name, optional",
+            "examples": [
+              "Koirala"
+            ],
+            "type": "string"
+          },
+          "password": {
+            "description": "minLength:8,maxLength:50, desc:Admin's password (min 8 chars)",
+            "examples": [
+              "SecurePass123!"
+            ],
+            "type": "string"
+          },
+          "phone": {
+            "description": "desc:Admin's phone number, optional",
+            "examples": [
+              "+9779800000000"
+            ],
+            "type": "string"
+          },
+          "preferences": {
+            "additionalProperties": {},
+            "description": "desc:Admin preferences or settings, optional",
+            "examples": [
+              {
+                "notifications": true,
+                "theme": "dark"
+              }
+            ],
+            "type": "object"
+          },
+          "referralCode": {
+            "description": "desc:Referral code used by the admin, optional",
+            "examples": [
+              "REF12345"
+            ],
+            "type": "string"
+          },
+          "referredBy": {
+            "description": "desc:Admin ID or email or adminname of the admin who referred this admin, optional",
+            "examples": [
+              "axyut"
+            ],
+            "type": "string"
+          },
+          "role": {
+            "description": "enum:admin,professional,admin,superadmin, desc:Admin role, one of 'admin', 'superadmin'",
+            "examples": [
+              "admin"
+            ],
+            "type": "string"
+          },
+          "socialLinks": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "desc:Admin's social media links, optional",
+            "examples": [
+              {
+                "github": "https://github.com/axyut",
+                "linkedin": "https://linkedin.com/in/axyut"
+              }
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "email",
+          "adminname",
+          "password"
+        ],
+        "type": "object"
+      },
+      "CreateUserInputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/CreateUserInputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "address": {
+            "description": "desc:User's address, optional",
+            "examples": [
+              "Chitwan, Nepal"
+            ],
+            "type": "string"
+          },
+          "bio": {
+            "description": "desc:User's bio or description, optional",
+            "examples": [
+              "Backend Developer from Nepal."
+            ],
+            "type": "string"
+          },
+          "email": {
+            "description": "minLength:5,maxLength:100, desc:User's email address",
+            "examples": [
+              "mail@achyutkoirala.com.np"
+            ],
+            "type": "string"
+          },
+          "firstName": {
+            "description": "desc:User's first name, optional",
+            "examples": [
+              "Achyut"
+            ],
+            "type": "string"
+          },
+          "imageUrl": {
+            "description": "desc:URL of the user's profile image, optional",
+            "examples": [
+              "https://picsum.photos/200.jpg"
+            ],
+            "type": "string"
+          },
+          "lastName": {
+            "description": "desc:User's last name, optional",
+            "examples": [
+              "Koirala"
+            ],
+            "type": "string"
+          },
+          "password": {
+            "description": "minLength:8,maxLength:50, desc:User's password (min 8 chars)",
+            "examples": [
+              "SecurePass123!"
+            ],
+            "type": "string"
+          },
+          "phone": {
+            "description": "desc:User's phone number, optional",
+            "examples": [
+              "+9779800000000"
+            ],
+            "type": "string"
+          },
+          "preferences": {
+            "additionalProperties": {},
+            "description": "desc:User preferences or settings, optional",
+            "examples": [
+              {
+                "notifications": true,
+                "theme": "dark"
+              }
+            ],
+            "type": "object"
+          },
+          "referralCode": {
+            "description": "desc:Referral code used by the user, optional",
+            "examples": [
+              "REF12345"
+            ],
+            "type": "string"
+          },
+          "referredBy": {
+            "description": "desc:User ID or email or username of the user who referred this user, optional",
+            "examples": [
+              "axyut"
+            ],
+            "type": "string"
+          },
+          "role": {
+            "description": "enum:user,professional, desc:User role, one of 'user', 'professional'",
+            "examples": [
+              "user"
+            ],
+            "type": "string"
+          },
+          "socialLinks": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "desc:User's social media links, optional",
+            "examples": [
+              {
+                "github": "https://github.com/axyut",
+                "linkedin": "https://linkedin.com/in/axyut"
+              }
+            ],
+            "type": "object"
+          },
+          "username": {
+            "description": "minLength:3,maxLength:50,pattern:^[a-zA-Z0-9_]+$, desc:Unique username, alphanumeric and underscores only, 3-50 chars",
+            "examples": [
+              "axyut"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "username",
+          "password"
+        ],
+        "type": "object"
+      },
+      "ErrorDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "location": {
+            "description": "Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'",
+            "type": "string"
+          },
+          "message": {
+            "description": "Error message text",
+            "type": "string"
+          },
+          "value": {
+            "description": "The value at the given location"
+          }
+        },
+        "type": "object"
+      },
+      "ErrorModel": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/ErrorModel.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "detail": {
+            "description": "A human-readable explanation specific to this occurrence of the problem.",
+            "examples": [
+              "Property foo is required but is missing."
+            ],
+            "type": "string"
+          },
+          "errors": {
+            "description": "Optional list of individual error details",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetail"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "instance": {
+            "description": "A URI reference that identifies the specific occurrence of the problem.",
+            "examples": [
+              "https://example.com/error-log/abc123"
+            ],
+            "format": "uri",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status code",
+            "examples": [
+              400
+            ],
+            "format": "int64",
+            "type": "integer"
+          },
+          "title": {
+            "description": "A short, human-readable summary of the problem type. This value should not change between occurrences of the error.",
+            "examples": [
+              "Bad Request"
+            ],
+            "type": "string"
+          },
+          "type": {
+            "default": "about:blank",
+            "description": "A URI reference to human-readable documentation for the error.",
+            "examples": [
+              "https://example.com/errors/example"
+            ],
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "GetSortOptionsOutputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/GetSortOptionsOutputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "data": {
+            "examples": [
+              [
+                "created_at",
+                "email",
+                "role",
+                "updated_at",
+                "username"
+              ]
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "type": "object"
+      },
+      "HealthCheckOutputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/HealthCheckOutputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "status": {
+            "description": "API health status",
+            "examples": [
+              "healthy"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "type": "object"
+      },
+      "HealthStatus": {
+        "additionalProperties": false,
+        "properties": {
+          "database": {
+            "examples": [
+              "ok"
+            ],
+            "type": "string"
+          },
+          "load": {
+            "examples": [
+              11.35
+            ],
+            "format": "double",
+            "type": "number"
+          },
+          "server": {
+            "examples": [
+              "ok"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "database",
+          "server",
+          "load"
+        ],
+        "type": "object"
+      },
+      "LoginInputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/LoginInputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "identifier": {
+            "description": "User or admin's email address or username",
+            "examples": [
+              "user@niyam.com"
+            ],
+            "type": "string"
+          },
+          "password": {
+            "description": "User's password -- minLength:8,maxLength:50",
+            "examples": [
+              "SecurePass123!"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "identifier",
+          "password"
+        ],
+        "type": "object"
+      },
+      "LogoutOutputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/LogoutOutputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "message": {
+            "description": "A confirmation message",
+            "examples": [
+              "Successfully logged out"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "type": "object"
+      },
+      "MetadataContact": {
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "examples": [
+              "mail@achyutkoirala.com.np"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "examples": [
+              "API Support"
+            ],
+            "type": "string"
+          },
+          "url": {
+            "examples": [
+              "/contact"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "url"
+        ],
+        "type": "object"
+      },
+      "MetadataLinks": {
+        "additionalProperties": false,
+        "properties": {
+          "privacyPolicy": {
+            "examples": [
+              "/api/terms_condition"
+            ],
+            "type": "string"
+          },
+          "self": {
+            "examples": [
+              "/"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "self",
+          "privacyPolicy"
+        ],
+        "type": "object"
+      },
+      "MetadataOutputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/MetadataOutputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/MetadataContact"
+          },
+          "description": {
+            "examples": [
+              "API description"
+            ],
+            "type": "string"
+          },
+          "documentation": {
+            "examples": [
+              "/docs"
+            ],
+            "type": "string"
+          },
+          "environment": {
+            "examples": [
+              "development"
+            ],
+            "type": "string"
+          },
+          "health": {
+            "$ref": "#/components/schemas/HealthStatus"
+          },
+          "links": {
+            "$ref": "#/components/schemas/MetadataLinks"
+          },
+          "service": {
+            "examples": [
+              "My API"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "examples": [
+              "operational"
+            ],
+            "type": "string"
+          },
+          "uptime": {
+            "examples": [
+              "8d 19h 16m"
+            ],
+            "type": "string"
+          },
+          "version": {
+            "examples": [
+              "v1"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "service",
+          "version",
+          "description",
+          "status",
+          "uptime",
+          "health",
+          "documentation",
+          "links",
+          "contact",
+          "environment"
+        ],
+        "type": "object"
+      },
+      "PaginatedResponseUserOutputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/PaginatedResponseUserOutputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/UserOutputBody"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ],
+        "type": "object"
+      },
+      "PaginationMeta": {
+        "additionalProperties": false,
+        "properties": {
+          "currentPage": {
+            "examples": [
+              1
+            ],
+            "format": "int64",
+            "type": "integer"
+          },
+          "hasNextPage": {
+            "examples": [
+              true
+            ],
+            "type": "boolean"
+          },
+          "hasPrevPage": {
+            "examples": [
+              false
+            ],
+            "type": "boolean"
+          },
+          "itemsPerPage": {
+            "examples": [
+              10
+            ],
+            "format": "int64",
+            "type": "integer"
+          },
+          "totalItems": {
+            "examples": [
+              100
+            ],
+            "format": "int64",
+            "type": "integer"
+          },
+          "totalPages": {
+            "examples": [
+              10
+            ],
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "totalItems",
+          "totalPages",
+          "itemsPerPage",
+          "currentPage",
+          "hasNextPage",
+          "hasPrevPage"
+        ],
+        "type": "object"
+      },
+      "ScanOutputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/ScanOutputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/ScanPageOutput"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "results"
+        ],
+        "type": "object"
+      },
+      "ScanPageOutput": {
+        "additionalProperties": false,
+        "properties": {
+          "fileName": {
+            "examples": [
+              "document.pdf"
+            ],
+            "type": "string"
+          },
+          "pageNumber": {
+            "examples": [
+              1
+            ],
+            "format": "int64",
+            "type": "integer"
+          },
+          "text": {
+            "examples": [
+              "This is the text from page 1."
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "pageNumber",
+          "fileName",
+          "text"
+        ],
+        "type": "object"
+      },
+      "UserAuthOutputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/UserAuthOutputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "token": {
+            "description": "JWT token for authenticated requests",
+            "examples": [
+              "abcd1234efgh5678ijkl9012mnop3456qrst7890uvwx"
+            ],
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserOutput",
+            "description": "Basic public user information"
+          }
+        },
+        "required": [
+          "token",
+          "user"
+        ],
+        "type": "object"
+      },
+      "UserOutput": {
+        "additionalProperties": false,
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/UserOutputBody"
+          }
+        },
+        "required": [
+          "Body"
+        ],
+        "type": "object"
+      },
+      "UserOutputBody": {
+        "additionalProperties": false,
+        "properties": {
+          "$schema": {
+            "description": "A URL to the JSON Schema for this object.",
+            "examples": [
+              "https://example.com/UserOutputBody.json"
+            ],
+            "format": "uri",
+            "readOnly": true,
+            "type": "string"
+          },
+          "address": {
+            "description": "User's address, optional",
+            "examples": [
+              "Chitwan, Nepal"
+            ],
+            "type": "string"
+          },
+          "bio": {
+            "description": "User's bio or description, optional",
+            "examples": [
+              "Backend Developer from Nepal."
+            ],
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "Creation timestamp of the user record",
+            "examples": [
+              "2023-10-01T12:00:00Z"
+            ],
+            "format": "date-time",
+            "type": "string"
+          },
+          "email": {
+            "description": "Unique Email for the user",
+            "examples": [
+              "mail@achyutkoirala.com.np"
+            ],
+            "type": "string"
+          },
+          "firstName": {
+            "description": "First name of the user, optional",
+            "examples": [
+              "Achyut"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "description": "Unique identifier for the user",
+            "examples": [
+              "654a93c7e0f2f3f4c5d6e7f8"
+            ],
+            "type": "string"
+          },
+          "imageUrl": {
+            "description": "URL of the user's profile image, optional",
+            "examples": [
+              "https://picsum.photos/200.jpg"
+            ],
+            "type": "string"
+          },
+          "lastName": {
+            "description": "Last name of the user, optional",
+            "examples": [
+              "Koirala"
+            ],
+            "type": "string"
+          },
+          "phone": {
+            "description": "User's phone number, optional",
+            "examples": [
+              "+9779800000000"
+            ],
+            "type": "string"
+          },
+          "preferences": {
+            "additionalProperties": {},
+            "description": "User preferences or settings, optional",
+            "examples": [
+              {
+                "notifications": true,
+                "theme": "dark"
+              }
+            ],
+            "type": "object"
+          },
+          "role": {
+            "description": "User's role, one of 'user', 'professional'",
+            "examples": [
+              "user"
+            ],
+            "type": "string"
+          },
+          "socialLinks": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "User's social media links, optional",
+            "examples": [
+              {
+                "github": "https://github.com/axyut",
+                "linkedin": "https://linkedin.com/in/axyut"
+              }
+            ],
+            "type": "object"
+          },
+          "updatedAt": {
+            "description": "Last update timestamp of the user record",
+            "examples": [
+              "2023-10-01T12:00:00Z"
+            ],
+            "format": "date-time",
+            "type": "string"
+          },
+          "username": {
+            "description": "User's unique username, alphanumeric and underscores only, 3-50 chars",
+            "examples": [
+              "axyut"
+            ],
+            "type": "string"
+          },
+          "verified": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "description": "desc:Verification status for different methods, optional",
+            "examples": [
+              {
+                "email": true,
+                "phone": false
+              }
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "email",
+          "role",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "description": "API/Backend service for the Niyam application.",
+    "title": "Niyam API",
+    "version": "1.0.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataOutputBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Get"
+      }
+    },
+    "/api/v1/admin/": {
+      "post": {
+        "description": "Create a new admin with email and password, returns JWT token and admin info",
+        "operationId": "post-create-admin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAdminInputBody",
+                "description": "desc:Admin creation input data"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminAuthOutputBody"
+                }
+              }
+            },
+            "description": "Created",
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "description": "Set the authentication token as a cookie",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Create admin",
+        "tags": [
+          "Admin"
+        ]
+      }
+    },
+    "/api/v1/admin/login": {
+      "post": {
+        "description": "Login Admin or Superadmin with email and password, returns JWT token and admin info",
+        "operationId": "get-admin-login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginInputBody",
+                "description": "desc:User login input data"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminAuthOutputBody"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "description": "Set the authentication token as a cookie",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Admin Login",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/admin/{idORmailORadminname}": {
+      "get": {
+        "description": "Retrieve admin information by admin ID. Returns public admin data.",
+        "operationId": "get-admin-by-identifier",
+        "parameters": [
+          {
+            "description": "Bearer token",
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "default": "Bearer ",
+              "description": "Bearer token",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Either the admin's ID, email, or adminname to retrieve the admin information",
+            "example": "axyut",
+            "in": "path",
+            "name": "idORmailORadminname",
+            "required": true,
+            "schema": {
+              "description": "Either the admin's ID, email, or adminname to retrieve the admin information",
+              "examples": [
+                "axyut"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminOutputBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Get Admin by ID OR Mail OR adminname",
+        "tags": [
+          "Admin"
+        ]
+      }
+    },
+    "/api/v1/logout": {
+      "post": {
+        "description": "Logs out the current or admin by clearing all the cookies.",
+        "operationId": "post-logout",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutOutputBody"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "Domain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Expires": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "HttpOnly": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "MaxAge": {
+                "schema": {
+                  "format": "int64",
+                  "type": "integer"
+                }
+              },
+              "Name": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Partitioned": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "Path": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Quoted": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "Raw": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "RawExpires": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "SameSite": {
+                "schema": {
+                  "format": "int64",
+                  "type": "integer"
+                }
+              },
+              "Secure": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "Set-Cookie": {
+                "schema": {
+                  "description": "An expired cookie to clear the auth token",
+                  "type": "string"
+                }
+              },
+              "Unparsed": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Value": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "LOGOUT ALL",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/scan/": {
+      "post": {
+        "description": "Performs OCR on one or more uploaded files (images or PDFs). Files should be provided in a multipart form with the field name 'files'.",
+        "operationId": "post-ocr-scan",
+        "parameters": [
+          {
+            "description": "Bearer token",
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "description": "Bearer token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "encoding": {
+                "files": {
+                  "contentType": "image/*,application/pdf"
+                },
+                "lang": {
+                  "contentType": "text/plain"
+                }
+              },
+              "schema": {
+                "properties": {
+                  "files": {
+                    "items": {
+                      "contentEncoding": "binary",
+                      "contentMediaType": "application/octet-stream",
+                      "description": "Image or PDF files for OCR scanning.",
+                      "format": "binary",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "lang": {
+                    "default": "nep",
+                    "description": "Tesseract language code(s) for all files (e.g., 'eng', 'nep', 'eng+hin').",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanOutputBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Scan Images or PDFs",
+        "tags": [
+          "Scan"
+        ]
+      }
+    },
+    "/api/v1/users/": {
+      "post": {
+        "description": "Create a new user with email and password, returns JWT token and user info",
+        "operationId": "post-create-user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserInputBody",
+                "description": "desc:User creation input data"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAuthOutputBody"
+                }
+              }
+            },
+            "description": "Created",
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "description": "Set the authentication token as a cookie",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Create User",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/v1/users/login": {
+      "post": {
+        "description": "Login user with email and password, returns JWT token and user info",
+        "operationId": "get-user-login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginInputBody",
+                "description": "desc:User login input data"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAuthOutputBody"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "description": "Set the authentication token as a cookie",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "User Login",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/users/me": {
+      "get": {
+        "description": "Retrieve user information by user ID with the token you're logged in. Returns public user data.",
+        "operationId": "get-user-details",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserOutputBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Get your information",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/v1/users/users": {
+      "get": {
+        "description": "ADMIN_ONLY. Retrieves a paginated list of all users. This endpoint is restricted to admin and superadmin roles.",
+        "operationId": "get-all-users",
+        "parameters": [
+          {
+            "description": "Bearer token",
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "default": "Bearer ",
+              "description": "Bearer token",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The page number to retrieve.",
+            "explode": false,
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "default": 1,
+              "description": "The page number to retrieve.",
+              "format": "int64",
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The number of items to return per page.",
+            "explode": false,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "description": "The number of items to return per page.",
+              "format": "int64",
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Field to sort by.",
+            "explode": false,
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "default": "created_at",
+              "description": "Field to sort by.",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Sort order (asc or desc).",
+            "explode": false,
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "default": "desc",
+              "description": "Sort order (asc or desc).",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponseUserOutputBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Get All Users",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/v1/users/users/sort-options": {
+      "get": {
+        "description": "ADMIN_ONLY. Retrieves the list of fields that the user list can be sorted by.",
+        "operationId": "get-user-sort-options",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSortOptionsOutputBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Get User Sort Options",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/v1/users/users/{idORmailORusername}": {
+      "get": {
+        "description": "ADMIN_ONLY. Retrieve user information by user ID. Returns public user data.",
+        "operationId": "get-user-by-identifier",
+        "parameters": [
+          {
+            "description": "Bearer token",
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "default": "Bearer ",
+              "description": "Bearer token",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Either the user's ID, email, or username to retrieve the user information",
+            "example": "axyut",
+            "in": "path",
+            "name": "idORmailORusername",
+            "required": true,
+            "schema": {
+              "description": "Either the user's ID, email, or username to retrieve the user information",
+              "examples": [
+                "axyut"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserOutputBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Get User by ID OR Mail OR username",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/healthz": {
+      "get": {
+        "operationId": "get-healthz",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheckOutputBody"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Get healthz"
+      }
+    }
+  }
+}
