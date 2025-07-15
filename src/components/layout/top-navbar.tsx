@@ -2,22 +2,26 @@
 
 import React from "react";
 import { useTranslations } from "next-intl";
-import { Search } from "lucide-react";
-import { useUIStore } from "@/lib/store";
-import { Menu } from "lucide-react";
+import { Search, Bell } from "lucide-react";
+import { useAuthStore } from "@/lib/store";
 
 export function TopNavbar() {
   const t = useTranslations("TopNavbar");
-  const { toggleSidebar } = useUIStore();
+  const { openSettingsModal } = useAuthStore();
 
   return (
-    <header className="flex items-center justify-between h-16 bg-card border-b px-4 md:px-6">
-      {/* Hamburger menu for mobile to toggle the (hidden) sidebar if needed in future */}
-      <button onClick={toggleSidebar} className="md:hidden p-2 -ml-2">
-        <Menu />
+    <header className="flex items-center h-16 bg-card border-b px-4 md:px-6 gap-4">
+      {/* New Notifications Button on the far left */}
+      <button
+        onClick={() => openSettingsModal("notifications")}
+        className="p-2 rounded-full hover:bg-accent relative"
+      >
+        <Bell size={20} />
+        {/* Optional: Add a dot for unread notifications */}
+        <span className="absolute top-2 right-2 block h-2 w-2 rounded-full bg-primary ring-2 ring-card"></span>
       </button>
 
-      {/* Search bar remains */}
+      {/* Search bar remains central */}
       <div className="flex-1 flex justify-center">
         <div className="relative w-full max-w-md">
           <Search
@@ -32,8 +36,8 @@ export function TopNavbar() {
         </div>
       </div>
 
-      {/* A spacer to keep the search bar centered */}
-      <div className="md:hidden w-8"></div>
+      {/* This empty div helps balance the flex layout so the search bar stays centered */}
+      <div className="w-8 h-8"></div>
     </header>
   );
 }

@@ -2,9 +2,24 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { components } from "./api-types";
 
-type User = components["schemas"]["UserOutputBody"];
+// The raw API response types
+export type ApiUser = components["schemas"]["UserOutputBody"];
+export type ApiAdmin = components["schemas"]["AdminOutputBody"];
 
-// --- UI STORE ---
+// The UNIFIED, NORMALIZED user type for our frontend UI
+export interface SessionUser {
+  id: string;
+  displayName: string;
+  email: string;
+  role: string;
+  imageUrl?: string;
+  // Add other fields from the API that you want to display
+  bio?: string;
+  address?: string;
+  createdAt: string;
+}
+
+// --- UI STORE (No changes) ---
 interface UIState {
   isSidebarOpen: boolean;
   controlsPosition: "top" | "bottom";
@@ -12,9 +27,7 @@ interface UIState {
   setSidebarOpen: (isOpen: boolean) => void;
   setControlsPosition: (position: "top" | "bottom") => void;
 }
-
 type PersistedUIState = Pick<UIState, "isSidebarOpen" | "controlsPosition">;
-
 export const useUIStore = create(
   persist<UIState, [], [], PersistedUIState>(
     (set) => ({
@@ -38,13 +51,12 @@ export const useUIStore = create(
 
 // --- AUTH STORE ---
 export interface AuthState {
-  // Exporting the interface
-  user: User | null;
+  user: SessionUser | null;
   token: string | null;
   isSettingsModalOpen: boolean;
-  activeSettingsTab: "niyam" | "profile" | "settings";
+  activeSettingsTab: "niyam" | "account" | "settings" | "notifications";
   isLogoutConfirmOpen: boolean;
-  setUser: (user: User | null) => void;
+  setUser: (user: SessionUser | null) => void;
   setToken: (token: string | null) => void;
   openSettingsModal: (tab?: AuthState["activeSettingsTab"]) => void;
   closeSettingsModal: () => void;
@@ -54,7 +66,8 @@ export interface AuthState {
   logout: () => void;
 }
 
-type PersistedAuthState = Pick<AuthState, "token">;
+// FIX: The persisted state now includes both the token AND the user object.
+type PersistedAuthState = Pick<AuthState, "token" | "user">;
 
 export const useAuthStore = create(
   persist<AuthState, [], [], PersistedAuthState>(
@@ -62,11 +75,11 @@ export const useAuthStore = create(
       user: null,
       token: null,
       isSettingsModalOpen: false,
-      activeSettingsTab: "profile",
+      activeSettingsTab: "account",
       isLogoutConfirmOpen: false,
       setUser: (user) => set({ user }),
       setToken: (token) => set({ token }),
-      openSettingsModal: (tab = "profile") =>
+      openSettingsModal: (tab = "account") =>
         set({ isSettingsModalOpen: true, activeSettingsTab: tab }),
       closeSettingsModal: () => set({ isSettingsModalOpen: false }),
       setActiveSettingsTab: (tab) => set({ activeSettingsTab: tab }),
@@ -78,7 +91,11 @@ export const useAuthStore = create(
     {
       name: "niyam-auth-storage",
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ token: state.token }),
+      // The partialize function now saves both token and user.
+      partialize: (state) => ({
+        token: state.token,
+        user: state.user,
+      }),
     }
   )
 );

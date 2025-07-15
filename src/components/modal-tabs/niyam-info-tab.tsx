@@ -37,6 +37,26 @@ export function NiyamInfoTab() {
           </p>
         </div>
       </div>
+      <p className="text-muted-foreground max-w-md mx-auto">
+        Niyam is an open-source platform designed to make Nepali laws
+        accessible, navigable, and understandable for everyone, from legal
+        professionals to ordinary citizens.
+      </p>
+      <p className="text-muted-foreground max-w-md mx-auto">
+        Niyam is an open-source platform designed to make Nepali laws
+        accessible, navigable, and understandable for everyone, from legal
+        professionals to ordinary citizens.
+      </p>
+      <p className="text-muted-foreground max-w-md mx-auto">
+        Niyam is an open-source platform designed to make Nepali laws
+        accessible, navigable, and understandable for everyone, from legal
+        professionals to ordinary citizens.
+      </p>
+      <p className="text-muted-foreground max-w-md mx-auto">
+        Niyam is an open-source platform designed to make Nepali laws
+        accessible, navigable, and understandable for everyone, from legal
+        professionals to ordinary citizens.
+      </p>
     </div>
   );
 }
