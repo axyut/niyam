@@ -1,0 +1,31 @@
+body {
+  font-family: "sans-serif", "Arial", "Microsoft Yahei";
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+a,
+summary,
+button,
+input,
+[tabindex]:not([tabindex="-1"]) {
+  &:focus-visible {
+    box-shadow: none;
+  }
+}
+
+.button-switch {
+  @apply max-md:hidden;
+  svg {
+    @apply size-[14px];
+  }
+}
+
+/* Hide scrollbar for Webkit browsers */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.scrollbar-none {
+  scrollbar-width: none;
+}

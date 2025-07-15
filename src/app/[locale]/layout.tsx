@@ -8,6 +8,9 @@ import { TopNavbar } from "@/components/layout/top-navbar";
 import "@/styles/globals.css";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { BottomNavbar } from "@/components/layout/bottom-navbar";
+import { LogoutConfirmation } from "../../components/ui/logout-confirmation";
+import { SettingsModal } from "@/components/ui/settings-modal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -53,6 +56,9 @@ export default async function RootLayout({
                 <div className="flex-1 overflow-y-auto p-6">{children}</div>
               </main>
             </div>
+            <BottomNavbar />
+            <SettingsModal />
+            <LogoutConfirmation />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
