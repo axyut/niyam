@@ -4,29 +4,30 @@ import { components } from "./api-types";
 
 type User = components["schemas"]["UserOutputBody"];
 
-// --- UI STORE WITH NEW LAYOUT SETTING ---
+// --- UI STORE ---
 interface UIState {
   isSidebarOpen: boolean;
-  controlsPosition: "top" | "bottom"; // New state for controls position
+  controlsPosition: "top" | "bottom";
   toggleSidebar: () => void;
   setSidebarOpen: (isOpen: boolean) => void;
-  setControlsPosition: (position: "top" | "bottom") => void; // New action
+  setControlsPosition: (position: "top" | "bottom") => void;
 }
 
+type PersistedUIState = Pick<UIState, "isSidebarOpen" | "controlsPosition">;
+
 export const useUIStore = create(
-  persist<UIState>(
+  persist<UIState, [], [], PersistedUIState>(
     (set) => ({
       isSidebarOpen: true,
-      controlsPosition: "bottom", // Default position
+      controlsPosition: "bottom",
       toggleSidebar: () =>
         set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
       setSidebarOpen: (isOpen) => set({ isSidebarOpen: isOpen }),
       setControlsPosition: (position) => set({ controlsPosition: position }),
     }),
     {
-      name: "niyam-ui-storage", // Unique name for UI settings
+      name: "niyam-ui-storage",
       storage: createJSONStorage(() => localStorage),
-      // Persist only the user's preferences
       partialize: (state) => ({
         isSidebarOpen: state.isSidebarOpen,
         controlsPosition: state.controlsPosition,
@@ -35,8 +36,9 @@ export const useUIStore = create(
   )
 );
 
-// --- AUTH STORE (No changes needed here) ---
-interface AuthState {
+// --- AUTH STORE ---
+export interface AuthState {
+  // Exporting the interface
   user: User | null;
   token: string | null;
   isSettingsModalOpen: boolean;
@@ -52,8 +54,10 @@ interface AuthState {
   logout: () => void;
 }
 
+type PersistedAuthState = Pick<AuthState, "token">;
+
 export const useAuthStore = create(
-  persist<AuthState>(
+  persist<AuthState, [], [], PersistedAuthState>(
     (set) => ({
       user: null,
       token: null,

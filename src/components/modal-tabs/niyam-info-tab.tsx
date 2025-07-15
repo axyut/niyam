@@ -1,6 +1,5 @@
 "use client";
 
-import { Info } from "lucide-react";
 import Image from "next/image";
 
 export function NiyamInfoTab() {

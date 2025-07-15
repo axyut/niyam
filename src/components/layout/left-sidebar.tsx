@@ -74,7 +74,7 @@ export function LeftSidebar() {
         try {
           setUser(await apiClient.getMe(token));
         } catch (error) {
-          console.error("Session invalid, logging out.");
+          console.error("Session invalid, logging out.", error);
           logout();
         }
       }

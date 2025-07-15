@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useAuthStore } from "@/lib/store";
+import { useAuthStore, AuthState } from "@/lib/store";
 import { X, User, Settings, Info } from "lucide-react";
-import { NiyamInfoTab } from "@/components/modal-tabs/niyam-info-tab";
-import { ProfileTab } from "@/components/modal-tabs/profile-tab";
-import { SettingsTab } from "@/components/modal-tabs/settings-tab";
+import { NiyamInfoTab } from "../modal-tabs/niyam-info-tab";
+import { ProfileTab } from "../modal-tabs/profile-tab";
+import { SettingsTab } from "../modal-tabs/settings-tab";
 
 export function SettingsModal() {
   const {
@@ -15,7 +15,6 @@ export function SettingsModal() {
     setActiveSettingsTab,
   } = useAuthStore();
 
-  // Add listener for the Escape key
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -27,15 +26,26 @@ export function SettingsModal() {
       document.addEventListener("keydown", handleKeyDown);
     }
 
-    // Cleanup the event listener
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isSettingsModalOpen, closeSettingsModal]);
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      closeSettingsModal();
+    }
+  };
+
   if (!isSettingsModalOpen) return null;
 
-  const tabs = [
+  // This array is now strictly typed using the AuthState interface.
+  // This ensures any `id` must be 'niyam', 'profile', or 'settings'.
+  const tabs: {
+    id: AuthState["activeSettingsTab"];
+    label: string;
+    icon: React.ElementType;
+  }[] = [
     { id: "niyam", label: "Niyam", icon: Info },
     { id: "profile", label: "Profile", icon: User },
     { id: "settings", label: "Settings", icon: Settings },
@@ -55,7 +65,10 @@ export function SettingsModal() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center animate-fade-in-fast p-4">
+    <div
+      onClick={handleBackdropClick}
+      className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center animate-fade-in-fast p-4"
+    >
       <div className="bg-card rounded-lg shadow-2xl w-full max-w-2xl h-[600px] flex flex-col relative">
         <button
           onClick={closeSettingsModal}
@@ -68,7 +81,8 @@ export function SettingsModal() {
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveSettingsTab(tab.id as any)}
+                // Because `tabs` is now strongly typed, no type assertion is needed here.
+                onClick={() => setActiveSettingsTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeSettingsTab === tab.id
                     ? "bg-primary text-primary-foreground"

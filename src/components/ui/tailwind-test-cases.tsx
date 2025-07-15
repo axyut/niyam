@@ -1,10 +1,9 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { Button } from "./button";
 
 export function TailwindTestCases() {
-  const t = useTranslations("LawsPage"); // Assuming you might want a title from your translations
+  // const t = useTranslations("LawsPage"); // Assuming you might want a title from your translations
 
   return (
     <div className="space-y-12">
