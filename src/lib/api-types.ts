@@ -61,6 +61,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Current Admin's Profile
+         * @description Retrieves the profile information for the currently authenticated admin user.
+         */
+        get: operations["get-current-admin"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/{idORmailORadminname}": {
         parameters: {
             query?: never;
@@ -73,6 +93,296 @@ export interface paths {
          * @description Retrieve admin information by admin ID. Returns public admin data.
          */
         get: operations["get-admin-by-identifier"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get All Articles
+         * @description Retrieves a paginated and sorted list of all articles.
+         */
+        get: operations["get-all-articles"];
+        put?: never;
+        /**
+         * Create a new article
+         * @description Creates a new article. This endpoint is protected and requires admin or professional role.
+         */
+        post: operations["create-article"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles/sort-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Article Sort Options
+         * @description Retrieves the list of fields that the article list can be sorted by.
+         */
+        get: operations["get-article-sort-options"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles/{articleId}/comments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get comments for an article
+         * @description Retrieves a paginated and sorted list of all comments and their replies for a given article.
+         */
+        get: operations["get-article-comments"];
+        put?: never;
+        /** Create a top-level comment */
+        post: operations["create-top-level-comment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update an article
+         * @description ADMIN_ONLY. Updates an article's title, content, status, and other fields.
+         */
+        put: operations["update-article"];
+        post?: never;
+        /**
+         * Delete an article
+         * @description ADMIN_ONLY. Soft-deletes an article by changing its status to 'archived'.
+         */
+        delete: operations["delete-article"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles/{id}/permanent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Permanently delete an article
+         * @description SUPERADMIN_ONLY. Permanently deletes an article and all its associated data. This action is irreversible.
+         */
+        delete: operations["hard-delete-article"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles/{id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update an article's status
+         * @description Changes the status of an article to 'draft', 'reviewed', or 'published'.
+         */
+        put: operations["update-article-status"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles/{id}/view": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Record a view for an article
+         * @description A lightweight endpoint to increment the view count for an article. It returns immediately and processes the count in the background.
+         */
+        post: operations["record-article-view"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles/{id}/vote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Vote on an article
+         * @description Cast an upvote, downvote, or remove a vote from an article. Returns the new vote counts.
+         */
+        post: operations["vote-on-article"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a single article by its slug
+         * @description Retrieves a single article by its URL-friendly slug. This endpoint is public and does not require authentication.
+         */
+        get: operations["get-article-by-slug"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/comments/{commentId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Edit a comment
+         * @description Updates the content of a comment. Only the original author can edit their comment.
+         */
+        put: operations["update-comment"];
+        post?: never;
+        /**
+         * Delete a comment
+         * @description Soft-deletes a comment. Can be performed by the author or an admin.
+         */
+        delete: operations["delete-comment"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/comments/{commentId}/permanent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Permanently delete a comment
+         * @description SUPERADMIN_ONLY. Permanently deletes a comment and all of its replies. This action is irreversible.
+         */
+        delete: operations["hard-delete-comment"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/comments/{commentId}/replies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a reply to a comment */
+        post: operations["create-reply-to-comment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/comments/{commentId}/vote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Vote on a comment
+         * @description Cast an upvote, downvote, or remove a vote from a comment.
+         */
+        post: operations["vote-on-comment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/feed": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get the Public Article Feed
+         * @description Retrieves a paginated list of published articles, filtered by 'trending', 'recent', or 'popular'.
+         */
+        get: operations["get-public-feed"];
         put?: never;
         post?: never;
         delete?: never;
@@ -325,6 +635,75 @@ export interface components {
                 [key: string]: boolean;
             };
         };
+        ArticleOutputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            authorId: string;
+            authorType: string;
+            content: components["schemas"]["TranslatedString"];
+            /** Format: date-time */
+            createdAt: string;
+            id: string;
+            /** Format: date-time */
+            publishedAt?: string;
+            slug: string;
+            stats: components["schemas"]["ArticleStats"];
+            status: string;
+            summary: components["schemas"]["TranslatedString"];
+            tags: string[] | null;
+            title: components["schemas"]["TranslatedString"];
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        ArticleStats: {
+            /** Format: int64 */
+            commentCount: number;
+            /** Format: int64 */
+            downvoteCount: number;
+            /** Format: double */
+            popularityScore: number;
+            /** Format: int64 */
+            upvoteCount: number;
+            /** Format: int64 */
+            viewCount: number;
+        };
+        CommentAuthorOutput: {
+            id: string;
+            imageUrl?: string;
+            name: string;
+        };
+        CommentOutputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            articleId: string;
+            author: components["schemas"]["CommentAuthorOutput"];
+            content: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: int64 */
+            depth: number;
+            id: string;
+            isDeleted: boolean;
+            isEdited: boolean;
+            path: string;
+            stats: components["schemas"]["CommentStats"];
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        CommentStats: {
+            /** Format: int64 */
+            downvoteCount: number;
+            /** Format: int64 */
+            replyCount: number;
+            /** Format: int64 */
+            upvoteCount: number;
+        };
         CreateAdminInputBody: {
             /**
              * Format: uri
@@ -363,6 +742,45 @@ export interface components {
             socialLinks?: {
                 [key: string]: string;
             };
+        };
+        CreateArticleInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /** @description The full content of the article in Markdown or HTML. */
+            content: components["schemas"]["TranslatedString"];
+            /**
+             * @description The status of the article.
+             * @default draft
+             * @enum {string}
+             */
+            status: "draft" | "reviewed" | "published";
+            /** @description A brief summary of the article. */
+            summary: components["schemas"]["TranslatedString"];
+            /** @description A list of relevant tags. */
+            tags: string[] | null;
+            /** @description The title of the article in English and Nepali. */
+            title: components["schemas"]["TranslatedString"];
+        };
+        CreateCommentInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /** @description The text content of the comment. */
+            content: string;
+        };
+        CreateReplyInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /** @description The text content of the reply. */
+            content: string;
         };
         CreateUserInputBody: {
             /**
@@ -509,6 +927,24 @@ export interface components {
             uptime: string;
             version: string;
         };
+        PaginatedResponseArticleOutputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            data: components["schemas"]["ArticleOutputBody"][] | null;
+            meta: components["schemas"]["PaginationMeta"];
+        };
+        PaginatedResponseCommentOutputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            data: components["schemas"]["CommentOutputBody"][] | null;
+            meta: components["schemas"]["PaginationMeta"];
+        };
         PaginatedResponseUserOutputBody: {
             /**
              * Format: uri
@@ -543,6 +979,53 @@ export interface components {
             /** Format: int64 */
             pageNumber: number;
             text: string;
+        };
+        TranslatedString: {
+            /** @description The content in English. */
+            en: string;
+            /** @description The content in Nepali. */
+            np: string;
+        };
+        UpdateArticleInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /** @description The updated full content of the article. */
+            content: components["schemas"]["TranslatedString"];
+            /**
+             * @description The updated status of the article.
+             * @enum {string}
+             */
+            status: "published" | "draft" | "reviewed";
+            /** @description The updated summary of the article. */
+            summary: components["schemas"]["TranslatedString"];
+            /** @description The updated list of relevant tags. */
+            tags: string[] | null;
+            /** @description The updated title of the article. */
+            title: components["schemas"]["TranslatedString"];
+        };
+        UpdateArticleStatusInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /**
+             * @description The new status for the article.
+             * @enum {string}
+             */
+            status: "draft" | "reviewed" | "published";
+        };
+        UpdateCommentInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /** @description The new text content for the comment. */
+            content: string;
         };
         UserAuthOutputBody: {
             /**
@@ -606,6 +1089,41 @@ export interface components {
             verified?: {
                 [key: string]: boolean;
             };
+        };
+        VoteInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /**
+             * @description The type of vote to cast.
+             * @enum {string}
+             */
+            voteType: "up" | "down" | "none";
+        };
+        VoteOnCommentInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /**
+             * @description The type of vote to cast.
+             * @enum {string}
+             */
+            voteType: "up" | "down" | "none";
+        };
+        VoteOutputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /** Format: int64 */
+            downvotes: number;
+            /** Format: int64 */
+            upvotes: number;
         };
     };
     responses: never;
@@ -713,6 +1231,35 @@ export interface operations {
             };
         };
     };
+    "get-current-admin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "get-admin-by-identifier": {
         parameters: {
             query?: never;
@@ -738,6 +1285,606 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AdminOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-all-articles": {
+        parameters: {
+            query?: {
+                /** @description The page number to retrieve. */
+                page?: number;
+                /** @description The number of items to return per page. */
+                limit?: number;
+                /** @description Field to sort by. */
+                sortBy?: string;
+                /** @description Sort order (asc or desc). */
+                sortOrder?: "asc" | "desc";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedResponseArticleOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "create-article": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateArticleInputBody"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArticleOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-article-sort-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetSortOptionsOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-article-comments": {
+        parameters: {
+            query?: {
+                /** @description Sort comments by 'popular' (net votes) or 'recent' (creation date). */
+                sortBy?: "popular" | "recent";
+                /** @description Page number for top-level comments. */
+                page?: number;
+                /** @description Number of top-level comments per page. */
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                articleId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedResponseCommentOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "create-top-level-comment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                articleId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateCommentInputBody"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommentOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-article": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the article to update. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateArticleInputBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArticleOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "delete-article": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the article to delete. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "hard-delete-article": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the article to delete. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-article-status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the article to update. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateArticleStatusInputBody"];
+            };
+        };
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "record-article-view": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the article that was viewed. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Accepted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "vote-on-article": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the article to vote on. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VoteInputBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VoteOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-article-by-slug": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The URL-friendly slug of the article. */
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArticleOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-comment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                commentId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateCommentInputBody"];
+            };
+        };
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "delete-comment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                commentId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "hard-delete-comment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                commentId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "create-reply-to-comment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                commentId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateReplyInputBody"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommentOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "vote-on-comment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                commentId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VoteOnCommentInputBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VoteOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-public-feed": {
+        parameters: {
+            query?: {
+                /** @description The page number to retrieve. */
+                page?: number;
+                /** @description The number of items to return per page. */
+                limit?: number;
+                /** @description The filter to apply to the feed. */
+                filter?: "trending" | "recent" | "popular";
+                /** @description Sort order (asc or desc). */
+                sortOrder?: "asc" | "desc";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedResponseArticleOutputBody"];
                 };
             };
             /** @description Error */
