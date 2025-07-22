@@ -1,7 +1,6 @@
 import type { components, operations } from "./api-types";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://niyamapi.achyutkoirala.com.np";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.niyam.dev";
 
 async function fetcher<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${url}`, {

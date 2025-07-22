@@ -3,6 +3,7 @@
 ![Niyam Logo](https://placehold.co/1200x300/171717/FFFFFF?text=NIYAM&font=raleway)
 
 **A free platform to make Nepali laws accessible, navigable, and understandable for everyone.**
+Checkout [Website](https://niyam.dev)
 
 [![Project Status: Active](https://img.shields.io/badge/status-active-success.svg)](https://github.com/axyut/niyam)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -93,7 +94,7 @@ Make sure you have Node.js and npm installed on your machine.
 
 1.  Clone the repository:
     ```sh
-    git clone [https://github.com/your_username/niyam.git](https://github.com/your_username/niyam.git)
+    git clone https://github.com/axyut/niyam.git
     ```
 2.  Navigate to the project directory:
     ```sh
@@ -121,7 +122,7 @@ Make sure you have Node.js and npm installed on your machine.
 - [ ] **Phase 6: Testing, Optimization, and Deployment**
 - [ ] **Phase 7: Documentation and Open Source Release**
 
-See the open [issues](https://github.com/your_username/niyam/issues) for a full list of proposed features (and known issues).
+See the open [issues](https://github.com/axyut/niyam/issues) for a full list of proposed features (and known issues).
 
 ---
 
