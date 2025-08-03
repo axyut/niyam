@@ -2,24 +2,10 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { components } from "./api-types";
 
-// The raw API response types
 export type ApiUser = components["schemas"]["UserOutputBody"];
 export type ApiAdmin = components["schemas"]["AdminOutputBody"];
 
-// The UNIFIED, NORMALIZED user type for our frontend UI
-export interface SessionUser {
-  id: string;
-  displayName: string;
-  email: string;
-  role: string;
-  imageUrl?: string;
-  // Add other fields from the API that you want to display
-  bio?: string;
-  address?: string;
-  createdAt: string;
-}
-
-// --- UI STORE (No changes) ---
+// --- UI STORE ---
 interface UIState {
   isSidebarOpen: boolean;
   controlsPosition: "top" | "bottom";
@@ -49,14 +35,20 @@ export const useUIStore = create(
   )
 );
 
-// --- AUTH STORE ---
+// --- AUTH & CONTEXT STORE ---
 export interface AuthState {
-  user: SessionUser | null;
+  user: (ApiUser | ApiAdmin) | null;
   token: string | null;
   isSettingsModalOpen: boolean;
   activeSettingsTab: "niyam" | "account" | "settings" | "notifications";
   isLogoutConfirmOpen: boolean;
-  setUser: (user: SessionUser | null) => void;
+
+  // --- CONTEXT STATE (Re-added) ---
+  activeArticle: { id: string; title: string } | null;
+  activeContextualTab: "discuss" | "references" | "ai" | "info";
+
+  // --- ACTIONS ---
+  setUser: (user: (ApiUser | ApiAdmin) | null) => void;
   setToken: (token: string | null) => void;
   openSettingsModal: (tab?: AuthState["activeSettingsTab"]) => void;
   closeSettingsModal: () => void;
@@ -64,9 +56,12 @@ export interface AuthState {
   openLogoutConfirm: () => void;
   closeLogoutConfirm: () => void;
   logout: () => void;
+
+  // --- CONTEXT ACTIONS (Re-added) ---
+  setActiveArticle: (article: { id: string; title: string } | null) => void;
+  setActiveContextualTab: (tab: AuthState["activeContextualTab"]) => void;
 }
 
-// FIX: The persisted state now includes both the token AND the user object.
 type PersistedAuthState = Pick<AuthState, "token" | "user">;
 
 export const useAuthStore = create(
@@ -77,6 +72,9 @@ export const useAuthStore = create(
       isSettingsModalOpen: false,
       activeSettingsTab: "account",
       isLogoutConfirmOpen: false,
+      activeArticle: null, // Initial state
+      activeContextualTab: "discuss", // Initial state
+
       setUser: (user) => set({ user }),
       setToken: (token) => set({ token }),
       openSettingsModal: (tab = "account") =>
@@ -86,12 +84,20 @@ export const useAuthStore = create(
       openLogoutConfirm: () => set({ isLogoutConfirmOpen: true }),
       closeLogoutConfirm: () => set({ isLogoutConfirmOpen: false }),
       logout: () =>
-        set({ user: null, token: null, isLogoutConfirmOpen: false }),
+        set({
+          user: null,
+          token: null,
+          isLogoutConfirmOpen: false,
+          activeArticle: null,
+        }),
+
+      setActiveArticle: (article) =>
+        set({ activeArticle: article, activeContextualTab: "discuss" }),
+      setActiveContextualTab: (tab) => set({ activeContextualTab: tab }),
     }),
     {
       name: "niyam-auth-storage",
       storage: createJSONStorage(() => localStorage),
-      // The partialize function now saves both token and user.
       partialize: (state) => ({
         token: state.token,
         user: state.user,

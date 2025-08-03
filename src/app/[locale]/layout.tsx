@@ -10,6 +10,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { BottomNavbar } from "@/components/layout/bottom-navbar";
 import { LogoutConfirmation } from "../../components/ui/logout-confirmation";
+import { Toaster } from "@/components/ui/sonner";
 import { SettingsModal } from "@/components/ui/settings-modal";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -59,6 +60,7 @@ export default async function RootLayout({
             <BottomNavbar />
             <SettingsModal />
             <LogoutConfirmation />
+            <Toaster />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

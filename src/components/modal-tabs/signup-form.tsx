@@ -1,27 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { useAuthStore, SessionUser } from "@/lib/store";
+import { useAuthStore, ApiUser } from "@/lib/store";
 import { UserPlus } from "lucide-react";
 import { Button } from "../ui/button";
 import { apiClient } from "@/lib/api";
-import { components } from "@/lib/api-types";
+import { toast } from "sonner";
 
-type ApiUser = components["schemas"]["UserOutputBody"];
-
-// Normalizer function to convert the raw API user into our clean SessionUser
-function normalizeUser(user: ApiUser): SessionUser {
-  return {
-    id: user.id,
-    displayName: user.firstName || user.username,
-    email: user.email,
-    role: user.role,
-    imageUrl: user.imageUrl,
-    bio: user.bio,
-    address: user.address,
-    createdAt: user.createdAt,
-  };
-}
+// This component remains self-contained and doesn't need a normalizer
+// as it only deals with the ApiUser type from the signup response.
 
 export function SignupForm() {
   const { setUser, setToken } = useAuthStore();
@@ -32,31 +19,34 @@ export function SignupForm() {
     email: "",
     password: "",
   });
-  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
     setIsLoading(true);
     try {
       const response = await apiClient.signup(formData);
       if (response.token && response.user) {
         setToken(response.token);
-        const sessionUser = normalizeUser(response.user.Body as ApiUser);
-        setUser(sessionUser);
+        const newUser = response.user.Body as ApiUser;
+        setUser(newUser);
+        toast.success(`Account created successfully!`, {
+          description: `Welcome to Niyam, ${
+            newUser.firstName || newUser.username
+          }!`,
+        });
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "An unknown error occurred."
-      );
+      const errorMessage =
+        err instanceof Error ? err.message : "An unknown error occurred.";
+      toast.error("Signup Failed", { description: errorMessage });
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -103,10 +93,6 @@ export function SignupForm() {
         className="w-full p-3 bg-secondary border-border rounded-md focus:ring-2 focus:ring-ring"
         required
       />
-
-      {error && (
-        <p className="text-sm text-destructive text-center pt-2">{error}</p>
-      )}
 
       <div className="pt-2">
         <Button type="submit" className="w-full" size="lg" disabled={isLoading}>

@@ -5,26 +5,25 @@ import { useAuthStore } from "@/lib/store";
 import { LogOut, AlertTriangle } from "lucide-react";
 import { Button } from "./button";
 import { apiClient } from "@/lib/api";
+import { toast } from "sonner";
 
 export function LogoutConfirmation() {
   const { isLogoutConfirmOpen, closeLogoutConfirm, logout } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleLogout = async () => {
     setIsLoading(true);
-    setError(null);
     try {
-      // Call the API endpoint to invalidate the session on the server
       await apiClient.logout();
-      // If the API call is successful, clear the client-side state
       logout();
+      toast.info("You have been successfully logged out.");
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Logout failed. Please try again."
-      );
-      // Even if API fails, we can still log the user out on the client
+      // Still log out on the client even if the API fails
+      console.error("Logout failed:", err);
       logout();
+      toast.error(
+        "Logout failed on server, but you have been logged out locally."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -40,10 +39,8 @@ export function LogoutConfirmation() {
         </div>
         <h3 className="text-lg font-semibold text-foreground">Are you sure?</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          You will be logged out of your account and will need to sign in again
-          to access your data.
+          You will be logged out of your account.
         </p>
-        {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
         <div className="mt-6 flex justify-end gap-3">
           <Button
             variant="outline"

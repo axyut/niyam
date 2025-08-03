@@ -12,10 +12,14 @@ async function fetcher<T>(url: string, options?: RequestInit): Promise<T> {
     throw new Error(error.detail || "An API error occurred");
   }
   const text = await response.text();
-  return text ? JSON.parse(text) : ({} as T);
+  // Return an empty object for 204 No Content responses
+  if (response.status === 204 || !text) {
+    return {} as T;
+  }
+  return JSON.parse(text);
 }
 
-// Type definitions from OpenAPI spec
+// --- Type Aliases for Clarity ---
 type LoginRequestBody = components["schemas"]["LoginInputBody"];
 type CreateUserRequestBody = components["schemas"]["CreateUserInputBody"];
 type UserLoginSuccessResponse =
@@ -24,10 +28,12 @@ type AdminLoginSuccessResponse =
   operations["get-admin-login"]["responses"][200]["content"]["application/json"];
 type UserSignupSuccessResponse =
   operations["post-create-user"]["responses"][201]["content"]["application/json"];
-
-// FIX: Define the correct response types for getMe and logout
-type GetMeSuccessResponse =
+type GetMeUserSuccessResponse =
   operations["get-user-details"]["responses"][200]["content"]["application/json"];
+type GetMeAdminSuccessResponse =
+  operations["get-current-admin"]["responses"][200]["content"]["application/json"];
+type GetFeedSuccessResponse =
+  operations["get-public-feed"]["responses"][200]["content"]["application/json"];
 type LogoutSuccessResponse =
   operations["post-logout"]["responses"][200]["content"]["application/json"];
 
@@ -53,15 +59,25 @@ export const apiClient = {
     });
   },
 
-  // FIX: The getMe function is now correctly typed to ONLY return a user,
-  // as defined by the /api/v1/users/me endpoint in your spec.
-  getMe: (token: string): Promise<GetMeSuccessResponse> => {
+  // For regular users
+  getMe: (token: string): Promise<GetMeUserSuccessResponse> => {
     return fetcher(`/api/v1/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
 
-  // FIX: The logout function is now correctly typed.
+  // New specific method for admins
+  getCurrentAdmin: (token: string): Promise<GetMeAdminSuccessResponse> => {
+    return fetcher(`/api/v1/admin/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+
+  // New method to get the article feed
+  getFeed: (page = 1, limit = 10): Promise<GetFeedSuccessResponse> => {
+    return fetcher(`/api/v1/feed?page=${page}&limit=${limit}&filter=recent`);
+  },
+
   logout: (): Promise<LogoutSuccessResponse> => {
     return fetcher(`/api/v1/logout`, { method: "POST" });
   },

@@ -56,7 +56,7 @@ export function AccountTab() {
   useEffect(() => {
     if (user) {
       setFormData({
-        displayName: user.displayName || "",
+        displayName: user.firstName || "",
         bio: user.bio || "",
         address: user.address || "",
       });
@@ -83,19 +83,14 @@ export function AccountTab() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Image
-              src={
-                user.imageUrl ||
-                `https://placehold.co/96x96/1a1a1a/ffffff/png?text=${user.displayName
-                  .charAt(0)
-                  .toUpperCase()}`
-              }
+              src={user.imageUrl || `https://picsum.photos/200.jpg`}
               alt="User profile picture"
               width={96}
               height={96}
               className="rounded-full border-4 border-primary/50"
             />
             <div>
-              <h3 className="text-2xl font-bold">{user.displayName}</h3>
+              <h3 className="text-2xl font-bold">{user.firstName}</h3>
               <p className="text-muted-foreground">{user.email}</p>
             </div>
           </div>

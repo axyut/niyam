@@ -81,6 +81,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/professionals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Upgrade a User to a Professional
+         * @description ADMIN_ONLY. Upgrades an existing user to the 'professional' role and creates their public profile.
+         */
+        post: operations["create-professional"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/{idORmailORadminname}": {
         parameters: {
             query?: never;
@@ -160,6 +180,26 @@ export interface paths {
         put?: never;
         /** Create a top-level comment */
         post: operations["create-top-level-comment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles/{articleId}/link-document/{documentIdString}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Link Document to Article
+         * @description PROFESSIONAL_OR_ADMIN. Links a verified document to an article, allowing the article to reference the structured content.
+         */
+        get: operations["link-document-to-article"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -371,6 +411,130 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get All Public Legal Documents
+         * @description Retrieves a paginated and sorted list of all public legal documents, suitable for the 'Laws and Policies' page.
+         */
+        get: operations["get-all-public-documents"];
+        put?: never;
+        /**
+         * Scan and structure a document optionally for an article
+         * @description PROFESSIONAL_OR_ADMIN. Upload a source file (PDF/image) to be scanned, structured, and linked to a draft article. Returns the structured data for frontend verification.
+         */
+        post: operations["process-new-document"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get All Legal Documents
+         * @description Retrieves a paginated and sorted list of all legal documents, including private ones.
+         */
+        get: operations["get-all-documents"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/structured/{documentIdString}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Structured Document Content
+         * @description Retrieves the full, structured content of a public legal document, deserialized from Protobuf into JSON.
+         */
+        get: operations["get-structured-document"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{documentIdString}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a Single Legal Document
+         * @description Retrieves the full details of a single legal document by its ID, including all versions and structured content.
+         */
+        get: operations["get-document-by-id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{documentId}/finalize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update Structure. Submit verified document structure
+         * @description PROFESSIONAL_OR_ADMIN. Submits the final, human-verified structured document. This moves the document to .
+         */
+        put: operations["finalize-document-for-article"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update Document Status
+         * @description Changes the status of a document (e.g., from 'private' to 'public').
+         */
+        patch: operations["update-document-status"];
+        trace?: never;
+    };
     "/api/v1/feed": {
         parameters: {
             query?: never;
@@ -405,6 +569,46 @@ export interface paths {
          * @description Logs out the current or admin by clearing all the cookies.
          */
         post: operations["post-logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/professionals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get All Professional Profiles
+         * @description Retrieves a paginated and sorted list of all verified professional profiles.
+         */
+        get: operations["get-all-professionals"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/professionals/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a Single Professional's Profile
+         * @description Retrieves the public profile of a single verified professional by their ID.
+         */
+        get: operations["get-professional-by-id"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -670,6 +874,11 @@ export interface components {
             /** Format: int64 */
             viewCount: number;
         };
+        BackLink: {
+            context?: string;
+            source_document_id?: string;
+            source_section_id?: string;
+        };
         CommentAuthorOutput: {
             id: string;
             imageUrl?: string;
@@ -751,12 +960,14 @@ export interface components {
             readonly $schema?: string;
             /** @description The full content of the article in Markdown or HTML. */
             content: components["schemas"]["TranslatedString"];
+            /** @description Optional: The ID of an existing, verified document to link this article to. */
+            existingDocumentId?: string;
             /**
              * @description The status of the article.
              * @default draft
              * @enum {string}
              */
-            status: "draft" | "reviewed" | "published";
+            status: "draft" | "pending_admin_review" | "reviewed" | "published" | "archived";
             /** @description A brief summary of the article. */
             summary: components["schemas"]["TranslatedString"];
             /** @description A list of relevant tags. */
@@ -772,6 +983,25 @@ export interface components {
             readonly $schema?: string;
             /** @description The text content of the comment. */
             content: string;
+        };
+        CreateProfessionalInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            bio?: string;
+            currentPosition?: string;
+            expertiseTags?: string[] | null;
+            /** @description The professional's full name for their profile. */
+            fullName: string;
+            location?: string;
+            politicalParty?: string;
+            profileImageUrl?: string;
+            /** @description The professional's title (e.g., 'Member of Parliament'). */
+            profileTitle: string;
+            /** @description The ID of the user to upgrade. */
+            userId: string;
         };
         CreateReplyInputBody: {
             /**
@@ -820,6 +1050,28 @@ export interface components {
             };
             /** @description minLength:3,maxLength:50,pattern:^[a-zA-Z0-9_]+$, desc:Unique username, alphanumeric and underscores only, 3-50 chars */
             username: string;
+        };
+        CrossReference: {
+            context?: string;
+            target_document_id?: string;
+            target_section_id?: string;
+        };
+        DocumentStats: {
+            /** Format: int64 */
+            totalCrossReferences: number;
+            /** Format: int64 */
+            totalParagraphs: number;
+            /** Format: int64 */
+            totalSections: number;
+            /** Format: int64 */
+            totalWords: number;
+        };
+        DocumentVersion: {
+            /** Format: date-time */
+            amendmentDate: string;
+            amendmentNotes: string;
+            stats: components["schemas"]["DocumentStats"];
+            versionNumber: string;
         };
         ErrorDetail: {
             /** @description Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id' */
@@ -880,6 +1132,35 @@ export interface components {
             /** Format: double */
             load: number;
             server: string;
+        };
+        LegalDocument: {
+            /** Format: date-time */
+            CreatedAt: string;
+            DocumentIDString: string;
+            ID: string;
+            OwnerID: string;
+            OwnerType: string;
+            Status: string;
+            Title: string;
+            /** Format: date-time */
+            UpdatedAt: string;
+            Versions: components["schemas"]["DocumentVersion"][] | null;
+        };
+        LegalDocumentBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            LegalDocument: components["schemas"]["LegalDocument"];
+        };
+        LegalDocumentContent: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            sections?: components["schemas"]["Section"][] | null;
         };
         LoginInputBody: {
             /**
@@ -945,6 +1226,24 @@ export interface components {
             data: components["schemas"]["CommentOutputBody"][] | null;
             meta: components["schemas"]["PaginationMeta"];
         };
+        PaginatedResponseLegalDocument: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            data: components["schemas"]["LegalDocument"][] | null;
+            meta: components["schemas"]["PaginationMeta"];
+        };
+        PaginatedResponseProfessionalOutputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            data: components["schemas"]["ProfessionalOutputBody"][] | null;
+            meta: components["schemas"]["PaginationMeta"];
+        };
         PaginatedResponseUserOutputBody: {
             /**
              * Format: uri
@@ -966,6 +1265,39 @@ export interface components {
             /** Format: int64 */
             totalPages: number;
         };
+        Paragraph: {
+            original_text?: string;
+            paragraph_id?: string;
+            referenced_by?: components["schemas"]["BackLink"][] | null;
+            word_metadata?: components["schemas"]["WordMetadata"][] | null;
+        };
+        ProfessionalOutputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            bio?: string;
+            /** Format: date-time */
+            createdAt: string;
+            currentPosition?: string;
+            expertiseTags?: string[] | null;
+            fullName: string;
+            id: string;
+            isVerified: boolean;
+            location?: string;
+            politicalParty?: string;
+            profileImageUrl?: string;
+            profileTitle: string;
+            stats: components["schemas"]["ProfessionalStats"];
+            userId: string;
+        };
+        ProfessionalStats: {
+            /** Format: int64 */
+            articlesAuthored: number;
+            /** Format: double */
+            rating: number;
+        };
         ScanOutputBody: {
             /**
              * Format: uri
@@ -979,6 +1311,12 @@ export interface components {
             /** Format: int64 */
             pageNumber: number;
             text: string;
+        };
+        Section: {
+            heading?: string;
+            paragraphs?: components["schemas"]["Paragraph"][] | null;
+            referenced_by?: components["schemas"]["BackLink"][] | null;
+            section_id?: string;
         };
         TranslatedString: {
             /** @description The content in English. */
@@ -1016,7 +1354,7 @@ export interface components {
              * @description The new status for the article.
              * @enum {string}
              */
-            status: "draft" | "reviewed" | "published";
+            status: "draft" | "pending_admin_review" | "reviewed" | "published" | "archived";
         };
         UpdateCommentInputBody: {
             /**
@@ -1026,6 +1364,27 @@ export interface components {
             readonly $schema?: string;
             /** @description The new text content for the comment. */
             content: string;
+        };
+        UpdateDocumentStatusInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /**
+             * @description The new status for the document.
+             * @default private
+             * @enum {string}
+             */
+            status: "public" | "private" | "archived";
+        };
+        UpdateDocumentStatusOutputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            message: string;
         };
         UserAuthOutputBody: {
             /**
@@ -1125,6 +1484,15 @@ export interface components {
             /** Format: int64 */
             upvotes: number;
         };
+        WordMetadata: {
+            cross_reference?: components["schemas"]["CrossReference"];
+            definition?: string;
+            /** Format: int32 */
+            end_position?: number;
+            /** Format: int32 */
+            start_position?: number;
+            text?: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -1166,7 +1534,10 @@ export interface operations {
     "post-create-admin": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -1234,7 +1605,10 @@ export interface operations {
     "get-current-admin": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -1247,6 +1621,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AdminOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "create-professional": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateProfessionalInputBody"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProfessionalOutputBody"];
                 };
             };
             /** @description Error */
@@ -1310,7 +1717,10 @@ export interface operations {
                 /** @description Sort order (asc or desc). */
                 sortOrder?: "asc" | "desc";
             };
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -1339,7 +1749,10 @@ export interface operations {
     "create-article": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -1372,7 +1785,10 @@ export interface operations {
     "get-article-sort-options": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -1408,7 +1824,10 @@ export interface operations {
                 /** @description Number of top-level comments per page. */
                 limit?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 articleId: string;
             };
@@ -1439,7 +1858,10 @@ export interface operations {
     "create-top-level-comment": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 articleId: string;
             };
@@ -1471,10 +1893,48 @@ export interface operations {
             };
         };
     };
+    "link-document-to-article": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path: {
+                /** @description The ID of the article to link the document to. */
+                articleId: string;
+                /** @description The human-readable unique ID of the document to link. */
+                documentIdString: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "update-article": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 /** @description The ID of the article to update. */
                 id: string;
@@ -1510,7 +1970,10 @@ export interface operations {
     "delete-article": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 /** @description The ID of the article to delete. */
                 id: string;
@@ -1540,7 +2003,10 @@ export interface operations {
     "hard-delete-article": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 /** @description The ID of the article to delete. */
                 id: string;
@@ -1570,7 +2036,10 @@ export interface operations {
     "update-article-status": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 /** @description The ID of the article to update. */
                 id: string;
@@ -1634,7 +2103,10 @@ export interface operations {
     "vote-on-article": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 /** @description The ID of the article to vote on. */
                 id: string;
@@ -1670,7 +2142,10 @@ export interface operations {
     "get-article-by-slug": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 /** @description The URL-friendly slug of the article. */
                 slug: string;
@@ -1702,7 +2177,10 @@ export interface operations {
     "update-comment": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 commentId: string;
             };
@@ -1735,7 +2213,10 @@ export interface operations {
     "delete-comment": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 commentId: string;
             };
@@ -1764,7 +2245,10 @@ export interface operations {
     "hard-delete-comment": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 commentId: string;
             };
@@ -1793,7 +2277,10 @@ export interface operations {
     "create-reply-to-comment": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 commentId: string;
             };
@@ -1828,7 +2315,10 @@ export interface operations {
     "vote-on-comment": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path: {
                 commentId: string;
             };
@@ -1847,6 +2337,288 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["VoteOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-all-public-documents": {
+        parameters: {
+            query?: {
+                /** @description The page number to retrieve. */
+                page?: number;
+                /** @description The number of items to return per page. */
+                limit?: number;
+                /** @description Field to sort by. */
+                sortBy?: string;
+                /** @description Sort order (asc or desc). */
+                sortOrder?: "asc" | "desc";
+            };
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedResponseLegalDocument"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "process-new-document": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * @description The type of legal document being uploaded.
+                     * @default generic
+                     * @enum {string}
+                     */
+                    documentType?: "act" | "policy" | "regulation" | "law" | "generic";
+                    /** Format: binary */
+                    file: string;
+                    /** @default 1.0 */
+                    versionNumber?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LegalDocumentBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-all-documents": {
+        parameters: {
+            query?: {
+                /** @description The page number to retrieve. */
+                page?: number;
+                /** @description The number of items to return per page. */
+                limit?: number;
+                /** @description Field to sort by. */
+                sortBy?: string;
+                /** @description Sort order (asc or desc). */
+                sortOrder?: "asc" | "desc";
+            };
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedResponseLegalDocument"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-structured-document": {
+        parameters: {
+            query?: {
+                /** @description Optional: The specific version number to retrieve. Defaults to the latest. */
+                version?: string;
+            };
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path: {
+                /** @description The human-readable unique ID of the document (e.g., 'constitution-of-nepal-2072'). */
+                documentIdString: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LegalDocumentContent"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-document-by-id": {
+        parameters: {
+            query?: {
+                /** @description Optional: The specific version number to retrieve. Defaults to the latest. */
+                version?: string;
+            };
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path: {
+                /** @description The human-readable unique ID of the document (e.g., 'constitution-of-nepal-2072'). */
+                documentIdString: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LegalDocumentBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "finalize-document-for-article": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path: {
+                documentId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LegalDocumentContent"];
+            };
+        };
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LegalDocumentBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-document-status": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path: {
+                /** @description The ID of the document to update. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateDocumentStatusInputBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UpdateDocumentStatusOutputBody"];
                 };
             };
             /** @description Error */
@@ -1929,6 +2701,82 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LogoutOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-all-professionals": {
+        parameters: {
+            query?: {
+                /** @description The page number to retrieve. */
+                page?: number;
+                /** @description The number of items to return per page. */
+                limit?: number;
+                /** @description Field to sort by. */
+                sortBy?: string;
+                /** @description Sort order (asc or desc). */
+                sortOrder?: "asc" | "desc";
+            };
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedResponseProfessionalOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-professional-by-id": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path: {
+                /** @description The ID of the professional to retrieve. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProfessionalOutputBody"];
                 };
             };
             /** @description Error */
@@ -2056,7 +2904,10 @@ export interface operations {
     "get-user-details": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -2126,7 +2977,10 @@ export interface operations {
     "get-user-sort-options": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
             path?: never;
             cookie?: never;
         };

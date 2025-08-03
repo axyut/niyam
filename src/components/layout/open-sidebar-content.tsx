@@ -3,10 +3,17 @@
 import React from "react";
 import Image from "next/image";
 import { Link, usePathname } from "@/i18n/navigation";
-import { useUIStore, useAuthStore, SessionUser } from "@/lib/store";
+import { useUIStore, useAuthStore, ApiUser, ApiAdmin } from "@/lib/store";
 import { NavItem } from "@/config/nav";
 import { Playfair_Display } from "next/font/google";
-import { User, Settings, PanelLeftClose, LogOut, LogIn } from "lucide-react";
+import {
+  User,
+  Settings,
+  PanelLeftClose,
+  LogOut,
+  LogIn,
+  Bell,
+} from "lucide-react";
 import { ThemeToggle } from "../ui/theme-toggle";
 import { LanguageSwitcher } from "../ui/language-switcher";
 
@@ -36,7 +43,7 @@ const SidebarControls = () => {
 };
 
 interface OpenSidebarContentProps {
-  user: SessionUser | null;
+  user: (ApiUser | ApiAdmin) | null;
   isClient: boolean;
   visibleNavItems: NavItem[];
   t: (key: string) => string;
@@ -51,6 +58,13 @@ export function OpenSidebarContent({
   const { controlsPosition } = useUIStore();
   const { openSettingsModal, openLogoutConfirm } = useAuthStore();
   const pathname = usePathname();
+
+  const displayName = user
+    ? "username" in user
+      ? user.firstName || user.username
+      : user.firstName || user.adminname
+    : "Guest";
+  const initial = user ? displayName.charAt(0).toUpperCase() : null;
 
   return (
     <>
@@ -69,6 +83,14 @@ export function OpenSidebarContent({
           <h1 className={`${playfair.className} text-2xl font-bold`}>
             {t("title")}
           </h1>
+        </button>
+        {/* Notification button moved here */}
+        <button
+          onClick={() => openSettingsModal("notifications")}
+          className="p-2 rounded-full hover:bg-accent relative"
+        >
+          <Bell size={20} />
+          <span className="absolute top-2 right-2 block h-2 w-2 rounded-full bg-primary ring-2 ring-card"></span>
         </button>
       </div>
 
@@ -115,14 +137,12 @@ export function OpenSidebarContent({
                   />
                 ) : (
                   <div className="flex items-center justify-center h-full w-full rounded-full bg-secondary text-secondary-foreground font-bold">
-                    {user ? user.displayName.charAt(0).toUpperCase() : <User />}
+                    {initial || <User />}
                   </div>
                 )}
               </div>
               <div>
-                <p className="font-semibold text-sm">
-                  {user ? user.displayName : "Guest"}
-                </p>
+                <p className="font-semibold text-sm">{displayName}</p>
                 <p className="text-xs text-muted-foreground">
                   {user ? user.email : "Click to log in"}
                 </p>

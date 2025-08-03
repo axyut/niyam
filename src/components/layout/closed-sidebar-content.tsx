@@ -3,12 +3,12 @@
 import React from "react";
 import Image from "next/image";
 import { Link, usePathname } from "@/i18n/navigation";
-import { useUIStore, useAuthStore, SessionUser } from "@/lib/store";
+import { useUIStore, useAuthStore, ApiUser, ApiAdmin } from "@/lib/store";
 import { NavItem } from "@/config/nav";
-import { User, PanelRightClose } from "lucide-react";
+import { User, PanelRightClose, Bell } from "lucide-react";
 
 interface ClosedSidebarContentProps {
-  user: SessionUser | null;
+  user: (ApiUser | ApiAdmin) | null;
   isClient: boolean;
   visibleNavItems: NavItem[];
 }
@@ -21,6 +21,15 @@ export function ClosedSidebarContent({
   const { toggleSidebar, controlsPosition } = useUIStore();
   const { openSettingsModal } = useAuthStore();
   const pathname = usePathname();
+
+  const initial = user
+    ? ("username" in user
+        ? user.firstName || user.username
+        : user.firstName || user.adminname
+      )
+        .charAt(0)
+        .toUpperCase()
+    : null;
 
   return (
     <>
@@ -49,6 +58,16 @@ export function ClosedSidebarContent({
 
       <nav className="flex-grow px-2 py-4">
         <ul>
+          {/* Notification button added here for the closed state */}
+          <li>
+            <button
+              onClick={() => openSettingsModal("notifications")}
+              className="w-full flex justify-center p-3 my-1 rounded-md text-muted-foreground hover:bg-accent relative"
+            >
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-2 right-2 block h-2 w-2 rounded-full bg-primary ring-2 ring-card"></span>
+            </button>
+          </li>
           {visibleNavItems.map((item) => (
             <li key={item.labelKey}>
               <Link
@@ -82,7 +101,7 @@ export function ClosedSidebarContent({
                 />
               ) : (
                 <div className="flex items-center justify-center h-full w-full rounded-full bg-secondary text-secondary-foreground">
-                  <User size={16} />
+                  {initial || <User size={16} />}
                 </div>
               )}
             </div>

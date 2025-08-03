@@ -1,77 +1,42 @@
 "use client";
 
 import React, { useState } from "react";
-import { useAuthStore, SessionUser } from "@/lib/store";
+import { useAuthStore, ApiUser, ApiAdmin } from "@/lib/store";
 import { LogIn } from "lucide-react";
 import { Button } from "../ui/button";
 import { apiClient } from "@/lib/api";
-import { components } from "@/lib/api-types";
-
-// Raw API types
-type ApiUser = components["schemas"]["UserOutputBody"];
-type ApiAdmin = components["schemas"]["AdminOutputBody"];
-
-// --- NORMALIZER FUNCTIONS ---
-// These functions now include all fields for the SessionUser type.
-
-function normalizeUser(user: ApiUser): SessionUser {
-  return {
-    id: user.id,
-    displayName: user.firstName || user.username,
-    email: user.email,
-    role: user.role,
-    imageUrl: user.imageUrl,
-    bio: user.bio,
-    address: user.address,
-    createdAt: user.createdAt,
-  };
-}
-
-function normalizeAdmin(admin: ApiAdmin): SessionUser {
-  return {
-    id: admin.id,
-    displayName: admin.firstName || admin.adminname,
-    email: admin.email,
-    role: admin.role,
-    imageUrl: admin.imageUrl,
-    bio: admin.bio,
-    address: admin.address,
-    createdAt: admin.createdAt,
-  };
-}
+import { toast } from "sonner";
 
 export function LoginForm() {
   const { setUser, setToken } = useAuthStore();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [isAdminLogin, setIsAdminLogin] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
     setIsLoading(true);
     try {
+      let displayName = "";
       if (isAdminLogin) {
         const response = await apiClient.adminLogin({ identifier, password });
-        if (response.token && response.admin) {
-          setToken(response.token);
-          const sessionUser = normalizeAdmin(response.admin.Body as ApiAdmin);
-          setUser(sessionUser);
-        }
+        const admin = response.admin.Body as ApiAdmin;
+        setToken(response.token);
+        setUser(admin);
+        displayName = admin.firstName || admin.adminname;
       } else {
         const response = await apiClient.login({ identifier, password });
-        if (response.token && response.user) {
-          setToken(response.token);
-          const sessionUser = normalizeUser(response.user.Body as ApiUser);
-          setUser(sessionUser);
-        }
+        const user = response.user.Body as ApiUser;
+        setToken(response.token);
+        setUser(user);
+        displayName = user.firstName || user.username;
       }
+      toast.success(`Welcome back, ${displayName}!`);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "An unknown error occurred."
-      );
+      const errorMessage =
+        err instanceof Error ? err.message : "An unknown error occurred.";
+      toast.error("Login Failed", { description: errorMessage });
     } finally {
       setIsLoading(false);
     }
@@ -103,7 +68,6 @@ export function LoginForm() {
           required
         />
       </div>
-
       <div className="flex items-center justify-between pt-2">
         <div className="flex items-center gap-2">
           <input
@@ -125,9 +89,6 @@ export function LoginForm() {
           {isLoading ? "Logging in..." : "Login"}
         </Button>
       </div>
-      {error && (
-        <p className="text-sm text-destructive text-center pt-2">{error}</p>
-      )}
     </form>
   );
 }
