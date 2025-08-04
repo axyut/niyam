@@ -1,22 +1,31 @@
 "use client";
 
-import { useAuthStore, AuthState } from "@/lib/store";
-import { MessageSquare, Link, Bot, Info } from "lucide-react";
+import { useAuthStore } from "@/lib/store";
+import { useParams } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { MessageSquare, Link as LinkIcon, Bot, Info } from "lucide-react";
+
+type ContextualTab = "discuss" | "references" | "ai" | "info";
 
 export function ContextualNav() {
-  const { activeArticle, activeContextualTab, setActiveContextualTab } =
-    useAuthStore();
+  const { activeArticle } = useAuthStore();
+  const params = useParams<{ slug: string }>();
+  const pathname = usePathname();
 
-  const tabs: {
-    id: AuthState["activeContextualTab"];
-    label: string;
-    icon: React.ElementType;
-  }[] = [
-    { id: "discuss", label: "Discuss", icon: MessageSquare },
-    { id: "references", label: "References", icon: Link },
-    { id: "ai", label: "Ask AI", icon: Bot },
-    { id: "info", label: "Info", icon: Info },
-  ];
+  const pathSegments = pathname.split("/");
+  const currentTab = pathSegments[pathSegments.length - 1] as ContextualTab;
+
+  const activeTab = ["discuss", "references", "ai", "info"].includes(currentTab)
+    ? currentTab
+    : "discuss";
+
+  const tabs: { id: ContextualTab; label: string; icon: React.ElementType }[] =
+    [
+      { id: "discuss", label: "Discuss", icon: MessageSquare },
+      { id: "references", label: "References", icon: LinkIcon },
+      { id: "ai", label: "Ask AI", icon: Bot },
+      { id: "info", label: "Info", icon: Info },
+    ];
 
   return (
     <div
@@ -25,19 +34,18 @@ export function ContextualNav() {
       }`}
     >
       {tabs.map((tab) => (
-        <button
+        <Link
           key={tab.id}
-          onClick={() => setActiveContextualTab(tab.id)}
-          disabled={!activeArticle}
+          href={`/article/${params.slug}/${tab.id}`}
           className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-semibold transition-colors ${
-            activeContextualTab === tab.id && activeArticle
+            activeTab === tab.id
               ? "bg-card text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <tab.icon className="h-4 w-4" />
           {tab.label}
-        </button>
+        </Link>
       ))}
     </div>
   );
