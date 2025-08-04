@@ -1,71 +1,59 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
-import { apiClient } from "@/lib/api";
+import { useState } from "react";
+import { useAuthStore } from "@/lib/store";
+import { ArticleList } from "@/components/feed/article-list";
+import { RightPanelDefault } from "@/components/feed/right-panel-default";
+import { RightPanelHover } from "@/components/feed/right-panel-hover";
+// import { apiClient } from "@/lib/api";
 import { components } from "@/lib/api-types";
-import { FeedCard } from "@/components/ui/feed-card";
-import { Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 type Article = components["schemas"]["ArticleOutputBody"];
 
-export default function FeedPage() {
-  const t = useTranslations("HomePage");
+export default function RootPage() {
+  const { hoveredArticleId } = useAuthStore();
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchFeed = async () => {
-      try {
-        setIsLoading(true);
-        const response = await apiClient.getFeed();
-        setArticles(response.data || []);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load feed.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const hoveredArticle = articles.find(
+    (article) => article.id === hoveredArticleId
+  );
 
-    fetchFeed();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-full text-center">
-        <div className="bg-destructive/10 text-destructive p-4 rounded-md">
-          <h3 className="font-bold">Error</h3>
-          <p>{error}</p>
-        </div>
-      </div>
-    );
-  }
+  // The initial fetch is now handled inside ArticleList,
+  // so this page component just needs to manage the state.
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">{t("welcome")}</h1>
-      <div className="space-y-6">
-        {articles.length > 0 ? (
-          articles.map((article) => (
-            <FeedCard key={article.id} article={article} />
-          ))
-        ) : (
-          <div className="text-center py-12">
-            <h3 className="text-xl font-semibold">No articles found</h3>
-            <p className="text-muted-foreground">
-              The feed is currently empty. Please check back later.
-            </p>
-          </div>
-        )}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[calc(100vh-8rem)]">
+      {/* Left Panel: Shows the list of articles */}
+      <div className="bg-card border rounded-lg h-full overflow-hidden">
+        {/* FIX: Pass the required setArticles and setIsLoading props */}
+        <ArticleList
+          articles={articles}
+          setArticles={setArticles}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+      </div>
+
+      {/* Right Panel: Shows default content or a preview on hover */}
+      <div className="hidden md:block h-full overflow-hidden relative">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={hoveredArticle ? hoveredArticle.id : "default"}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="h-full w-full"
+          >
+            {hoveredArticle ? (
+              <RightPanelHover article={hoveredArticle} />
+            ) : (
+              <RightPanelDefault />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

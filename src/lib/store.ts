@@ -43,9 +43,10 @@ export interface AuthState {
   activeSettingsTab: "niyam" | "account" | "settings" | "notifications";
   isLogoutConfirmOpen: boolean;
 
-  // --- CONTEXT STATE (Re-added) ---
+  // --- CONTEXT STATE ---
   activeArticle: { id: string; title: string } | null;
   activeContextualTab: "discuss" | "references" | "ai" | "info";
+  hoveredArticleId: string | null; // NEW: To track hovered article for previews
 
   // --- ACTIONS ---
   setUser: (user: (ApiUser | ApiAdmin) | null) => void;
@@ -57,9 +58,10 @@ export interface AuthState {
   closeLogoutConfirm: () => void;
   logout: () => void;
 
-  // --- CONTEXT ACTIONS (Re-added) ---
+  // --- CONTEXT ACTIONS ---
   setActiveArticle: (article: { id: string; title: string } | null) => void;
   setActiveContextualTab: (tab: AuthState["activeContextualTab"]) => void;
+  setHoveredArticleId: (id: string | null) => void; // NEW: Action for hover state
 }
 
 type PersistedAuthState = Pick<AuthState, "token" | "user">;
@@ -72,8 +74,9 @@ export const useAuthStore = create(
       isSettingsModalOpen: false,
       activeSettingsTab: "account",
       isLogoutConfirmOpen: false,
-      activeArticle: null, // Initial state
-      activeContextualTab: "discuss", // Initial state
+      activeArticle: null,
+      activeContextualTab: "discuss",
+      hoveredArticleId: null, // Initial state
 
       setUser: (user) => set({ user }),
       setToken: (token) => set({ token }),
@@ -94,6 +97,7 @@ export const useAuthStore = create(
       setActiveArticle: (article) =>
         set({ activeArticle: article, activeContextualTab: "discuss" }),
       setActiveContextualTab: (tab) => set({ activeContextualTab: tab }),
+      setHoveredArticleId: (id) => set({ hoveredArticleId: id }), // New action implementation
     }),
     {
       name: "niyam-auth-storage",
