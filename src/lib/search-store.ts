@@ -17,7 +17,6 @@ interface SearchState {
   setQuery: (query: string) => void;
   toggleFilter: (filter: SearchFilter) => void;
 }
-
 export const useSearchStore = create<SearchState>((set) => ({
   isOpen: false,
   query: "",
@@ -30,7 +29,8 @@ export const useSearchStore = create<SearchState>((set) => ({
   },
 
   open: (context = "global") =>
-    set((state) => {
+    set(() => {
+      // Remove 'state' parameter since it's not used
       // Create a fresh filter state
       const newFilters: Record<SearchFilter, boolean> = {
         articles: false,

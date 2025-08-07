@@ -1,12 +1,31 @@
 import type { components, operations } from "./api-types";
+import { useAuthStore } from "./store";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.niyam.dev";
 
-async function fetcher<T>(url: string, options?: RequestInit): Promise<T> {
+// The fetcher needs to be updated to handle different Content-Types
+async function fetcher<T>(
+  url: string,
+  options?: RequestInit,
+  isFormData = false
+): Promise<T> {
+  const token = useAuthStore.getState().token;
+  const headers = new Headers(options?.headers);
+
+  // Don't set Content-Type for FormData; the browser does it automatically with the correct boundary
+  if (!isFormData) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
   const response = await fetch(`${API_BASE_URL}${url}`, {
     ...options,
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers,
   });
+
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.detail || "An API error occurred");
@@ -39,8 +58,54 @@ type LogoutSuccessResponse =
   operations["post-logout"]["responses"][200]["content"]["application/json"];
 type SearchSuccessResponse =
   operations["search-articles"]["responses"][200]["content"]["application/json"];
+type GetPublicDocumentsSuccessResponse =
+  operations["get-all-public-documents"]["responses"][200]["content"]["application/json"];
+type GetDocumentByIdSuccessResponse =
+  operations["get-document-by-id"]["responses"][200]["content"]["application/json"];
+type GetStructuredDocumentSuccessResponse =
+  operations["get-structured-document"]["responses"][200]["content"]["application/json"];
+type GetAllProfessionalsSuccessResponse =
+  operations["get-all-professionals"]["responses"][200]["content"]["application/json"];
+type GetProfessionalByIdSuccessResponse =
+  operations["get-professional-by-id"]["responses"][200]["content"]["application/json"];
+type ProcessDocumentSuccessResponse =
+  operations["process-new-document"]["responses"][200]["content"]["application/json"];
+type GetMyLegalDocumentsSuccessResponse =
+  operations["get-my-documents"]["responses"][200]["content"]["application/json"];
 
 export const apiClient = {
+  getMyLegalDocuments: (): Promise<GetMyLegalDocumentsSuccessResponse> => {
+    return fetcher(`/api/v1/documents/me`);
+  },
+  processNewDocument: (
+    file: File,
+    documentType: string
+  ): Promise<ProcessDocumentSuccessResponse> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("documentType", documentType);
+
+    // Pass the FormData directly to the body and set the isFormData flag
+    return fetcher(
+      `/api/v1/documents`,
+      {
+        method: "POST",
+        body: formData,
+      },
+      true
+    );
+  },
+  getAllProfessionals: (
+    page = 1,
+    limit = 20
+  ): Promise<GetAllProfessionalsSuccessResponse> => {
+    return fetcher(`/api/v1/professionals?page=${page}&limit=${limit}`);
+  },
+  getProfessionalById: (
+    id: string
+  ): Promise<GetProfessionalByIdSuccessResponse> => {
+    return fetcher(`/api/v1/professionals/${id}`);
+  },
   login: (data: LoginRequestBody): Promise<UserLoginSuccessResponse> => {
     return fetcher(`/api/v1/users/login`, {
       method: "POST",
@@ -128,6 +193,25 @@ export const apiClient = {
     return fetcher(
       `/api/v1/dictionary/search?q=${encodeURIComponent(query)}&limit=${limit}`
     );
+  },
+
+  getAllPublicDocuments: (
+    page = 1,
+    limit = 20
+  ): Promise<GetPublicDocumentsSuccessResponse> => {
+    return fetcher(`/api/v1/documents?page=${page}&limit=${limit}`);
+  },
+
+  getDocumentById: (
+    documentId: string
+  ): Promise<GetDocumentByIdSuccessResponse> => {
+    return fetcher(`/api/v1/documents/${documentId}`);
+  },
+
+  getStructuredDocument: (
+    documentId: string
+  ): Promise<GetStructuredDocumentSuccessResponse> => {
+    return fetcher(`/api/v1/documents/structured/${documentId}`);
   },
 
   logout: (): Promise<LogoutSuccessResponse> => {

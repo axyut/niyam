@@ -10,10 +10,10 @@ type DocumentContent = components["schemas"]["LegalDocumentContent"];
 
 interface DocumentViewProps {
   article: Article;
-  documentContent: DocumentContent;
+  content: DocumentContent;
 }
 
-export function DocumentView({ article, documentContent }: DocumentViewProps) {
+export function DocumentView({ article, content }: DocumentViewProps) {
   const [showBackButton, setShowBackButton] = useState(true);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -67,13 +67,28 @@ export function DocumentView({ article, documentContent }: DocumentViewProps) {
           </p>
           <div className="border-b my-6"></div>
           <div className="prose dark:prose-invert max-w-none">
-            {documentContent.sections?.map((section, index) => (
-              <section key={section.section_id || index}>
-                {section.heading && <h2>{section.heading}</h2>}
-                {section.paragraphs?.map((p, pIndex) => (
-                  <p key={p.paragraph_id || pIndex}>{p.original_text}</p>
+            {content.chapters?.map((chapter, chapIndex) => (
+              <div key={chapter.chapter_id || chapIndex}>
+                {chapter.title && (
+                  <h1 id={chapter.chapter_id || `chap-${chapIndex}`}>
+                    {chapter.title}
+                  </h1>
+                )}
+                {chapter.sections?.map((section, secIndex) => (
+                  <section key={section.section_id || secIndex}>
+                    {section.title && (
+                      <h2 id={section.section_id || `sec-${secIndex}`}>
+                        {section.title}
+                      </h2>
+                    )}
+                    {section.clauses?.map((clause, clauseIndex) => (
+                      <p key={clause.clause_id || clauseIndex}>
+                        {clause.original_text}
+                      </p>
+                    ))}
+                  </section>
                 ))}
-              </section>
+              </div>
             ))}
           </div>
         </article>

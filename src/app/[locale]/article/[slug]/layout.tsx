@@ -37,27 +37,7 @@ export default function ArticleLayout({
         setArticle(articleData);
         setActiveArticle({ id: articleData.id, title: articleData.title.en });
 
-        setDocumentContent({
-          sections: [
-            {
-              section_id: "1",
-              heading: "Chapter 1: Introduction",
-              paragraphs: Array.from({ length: 10 }, (_, i) => ({
-                paragraph_id: `p1-${i}`,
-                original_text:
-                  "This is a paragraph of the introductory chapter.",
-              })),
-            },
-            {
-              section_id: "2",
-              heading: "Chapter 2: Core Principles",
-              paragraphs: Array.from({ length: 15 }, (_, i) => ({
-                paragraph_id: `p2-${i}`,
-                original_text: "This section outlines the core principles.",
-              })),
-            },
-          ],
-        });
+        setDocumentContent({});
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Failed to load article."
@@ -95,7 +75,7 @@ export default function ArticleLayout({
     <ArticleProvider article={article}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[calc(100vh-8rem)]">
         <div className="bg-card border rounded-lg h-full overflow-hidden">
-          <DocumentView article={article} documentContent={documentContent} />
+          <DocumentView article={article} content={documentContent} />
         </div>
         <div className="hidden md:block h-full overflow-hidden">
           {/* The child page (e.g., discuss/page.tsx) will now be rendered here */}

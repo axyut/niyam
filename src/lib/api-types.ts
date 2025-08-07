@@ -535,6 +535,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/documents/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get My Legal Documents
+         * @description Retrieves a paginated and sorted list of all legal documents owned by the authenticated user.
+         */
+        get: operations["get-my-documents"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/documents/search": {
         parameters: {
             query?: never;
@@ -2858,6 +2878,47 @@ export interface operations {
         };
     };
     "get-all-documents": {
+        parameters: {
+            query?: {
+                /** @description The page number to retrieve. */
+                page?: number;
+                /** @description The number of items to return per page. */
+                limit?: number;
+                /** @description Field to sort by. */
+                sortBy?: string;
+                /** @description Sort order (asc or desc). */
+                sortOrder?: "asc" | "desc";
+            };
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedResponseLegalDocument"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-my-documents": {
         parameters: {
             query?: {
                 /** @description The page number to retrieve. */
