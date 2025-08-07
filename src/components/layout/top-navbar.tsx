@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useSearchStore } from "@/lib/search-store";
 import { usePathname } from "@/i18n/navigation";
 import { Search, BookText } from "lucide-react";
@@ -11,13 +11,27 @@ function SearchTrigger() {
   const { open } = useSearchStore();
   const pathname = usePathname();
 
-  // Determine the search context based on the current page
   const getContext = () => {
     if (pathname.startsWith("/profiles")) return "professionals";
     if (pathname.startsWith("/laws")) return "documents";
-    // Default to 'articles' for the homepage/feed
     return "articles";
   };
+
+  // FIX: The keyboard listener is now here, in a context-aware component.
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        open(getContext());
+      }
+      if (e.key === "/" && (e.target as HTMLElement).tagName !== "INPUT") {
+        e.preventDefault();
+        open(getContext());
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, [pathname, open]); // Re-run effect if pathname changes
 
   return (
     <button
