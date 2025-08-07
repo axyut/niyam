@@ -3,26 +3,10 @@
     "welcome": "Welcome to Niyam",
     "description": "Your central hub for navigating the legal landscape of Nepal. Select an option from the sidebar to begin."
   },
-  "TopNavbar": {
-    "search_placeholder": "Search laws, policies...",
-    "profile": "Profile",
-    "settings": "Settings",
-    "logout": "Logout"
-  },
   "LeftSidebar": {
     "title": "NIYAM",
     "feed": "Feed",
-    "laws": "Laws",
-    "policy": "Policy",
-    "discussions": "Discussions",
-    "analytics": "Analytics",
-    "bookmarks": "Bookmarks",
-    "history": "History"
-  },
-  "LawsPage": {
-    "title": "Laws and Acts"
-  },
-  "DiscussionsPage": {
-    "title": "Community Discussions"
+    "docs": "Documents",
+    "mydocs": "My Documents"
   }
 }

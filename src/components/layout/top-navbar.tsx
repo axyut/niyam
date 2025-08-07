@@ -13,8 +13,9 @@ function SearchTrigger() {
 
   const getContext = () => {
     if (pathname.startsWith("/profiles")) return "professionals";
-    if (pathname.startsWith("/laws")) return "documents";
-    return "articles";
+    // return articles only if the root path
+    if (pathname === "/") return "articles";
+    return "documents";
   };
 
   // FIX: The keyboard listener is now here, in a context-aware component.

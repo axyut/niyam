@@ -2,7 +2,7 @@ import {
   Home,
   Scale,
   Users,
-  Bookmark,
+  Book,
   Briefcase,
   Shield,
   ShieldAlert,
@@ -29,19 +29,19 @@ export const navItems: NavItem[] = [
     labelKey: "Feed",
   },
   {
-    href: "/laws",
-    icon: Scale, // New icon for "Laws & Policies"
-    labelKey: "Laws & Policies",
+    href: "/docs",
+    icon: Scale,
+    labelKey: "Documents",
   },
   {
     href: "/profiles",
-    icon: Users, // New icon for "Profiles"
+    icon: Users,
     labelKey: "Profiles",
   },
   {
-    href: "/bookmarks",
-    icon: Bookmark,
-    labelKey: "Bookmarks",
+    href: "/mydocs",
+    icon: Book,
+    labelKey: "My Documents",
   },
   // --- Role-specific items ---
   {
