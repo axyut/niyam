@@ -37,6 +37,8 @@ type GetArticleBySlugSuccessResponse =
   operations["get-article-by-slug"]["responses"][200]["content"]["application/json"];
 type LogoutSuccessResponse =
   operations["post-logout"]["responses"][200]["content"]["application/json"];
+type SearchSuccessResponse =
+  operations["search-articles"]["responses"][200]["content"]["application/json"];
 
 export const apiClient = {
   login: (data: LoginRequestBody): Promise<UserLoginSuccessResponse> => {
@@ -89,6 +91,45 @@ export const apiClient = {
     // This is a "fire-and-forget" call, so we don't need to handle the response
     return fetcher(`/api/v1/articles/${articleId}/view`, { method: "POST" });
   },
+
+  searchArticles: (
+    query: string,
+    limit = 5
+  ): Promise<SearchSuccessResponse> => {
+    return fetcher(
+      `/api/v1/articles/search?q=${encodeURIComponent(query)}&limit=${limit}`
+    );
+  },
+
+  searchDocuments: (
+    query: string,
+    limit = 5
+  ): Promise<SearchSuccessResponse> => {
+    return fetcher(
+      `/api/v1/documents/search?q=${encodeURIComponent(query)}&limit=${limit}`
+    );
+  },
+
+  searchProfessionals: (
+    query: string,
+    limit = 5
+  ): Promise<SearchSuccessResponse> => {
+    return fetcher(
+      `/api/v1/professionals/search?q=${encodeURIComponent(
+        query
+      )}&limit=${limit}`
+    );
+  },
+
+  searchDictionary: (
+    query: string,
+    limit = 5
+  ): Promise<SearchSuccessResponse> => {
+    return fetcher(
+      `/api/v1/dictionary/search?q=${encodeURIComponent(query)}&limit=${limit}`
+    );
+  },
+
   logout: (): Promise<LogoutSuccessResponse> => {
     return fetcher(`/api/v1/logout`, { method: "POST" });
   },

@@ -12,6 +12,7 @@ import { BottomNavbar } from "@/components/layout/bottom-navbar";
 import { LogoutConfirmation } from "../../components/ui/logout-confirmation";
 import { Toaster } from "@/components/ui/sonner";
 import { SettingsModal } from "@/components/ui/settings-modal";
+import { SearchModal } from "@/components/search/search-modal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,6 +62,7 @@ export default async function RootLayout({
             <SettingsModal />
             <LogoutConfirmation />
             <Toaster />
+            <SearchModal />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

@@ -145,6 +145,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/articles/id/{articleId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Single Article by ID
+         * @description Returns article type document from inserted object hex Id
+         */
+        get: operations["get-single-article-by-id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/articles/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Articles
+         * @description Performs a full-text search for published articles by keyword in their title, summary, and tags.
+         */
+        get: operations["search-articles"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/articles/sort-options": {
         parameters: {
             query?: never;
@@ -186,7 +226,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/articles/{articleId}/link-document/{documentIdString}": {
+    "/api/v1/articles/{articleId}/link-document/{documentIdStringORHexId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -411,6 +451,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/dictionary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a Dictionary Term
+         * @description ADMIN_ONLY. Adds a new term and its definition to the legal dictionary.
+         */
+        post: operations["create-dictionary-term"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dictionary/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Dictionary Terms
+         * @description Performs a full-text search for terms in the legal dictionary.
+         */
+        get: operations["search-dictionary-terms"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/documents": {
         parameters: {
             query?: never;
@@ -455,7 +535,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/documents/structured/{documentIdString}": {
+    "/api/v1/documents/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Legal Documents
+         * @description Performs a full-text search for public legal documents by keyword in their title or unique ID string.
+         */
+        get: operations["search-documents"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/structured/{documentIdStringORHexId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -475,7 +575,87 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/documents/{documentIdString}": {
+    "/api/v1/documents/{docId}/versions/{version}/clauses/{clauseId}/metadata": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add metadata to a clause
+         * @description PROFESSIONAL_OR_ADMIN. Manually adds metadata (like a cross-reference or definition) to a clause.
+         */
+        post: operations["add-metadata"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{docId}/versions/{version}/clauses/{clauseId}/metadata/{metaId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove metadata from a clause
+         * @description PROFESSIONAL_OR_ADMIN. Removes a specific piece of metadata from a clause.
+         */
+        delete: operations["remove-metadata"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{docId}/versions/{version}/clauses/{clauseId}/reference": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add a cross-reference to a clause
+         * @description PROFESSIONAL_OR_ADMIN. Manually adds a cross-reference link from a phrase within a clause to another section.
+         */
+        post: operations["add-cross-reference"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{docId}/versions/{version}/sections/{sectionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update a section's title
+         * @description PROFESSIONAL_OR_ADMIN. Updates the title/heading of a specific section.
+         */
+        put: operations["update-section-title"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{documentIdStringORHexId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -587,6 +767,26 @@ export interface paths {
          * @description Retrieves a paginated and sorted list of all verified professional profiles.
          */
         get: operations["get-all-professionals"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/professionals/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Search Professional Profiles
+         * @description Performs a full-text search for verified professionals by keyword in their name, title, or expertise.
+         */
+        get: operations["search-professionals"];
         put?: never;
         post?: never;
         delete?: never;
@@ -776,6 +976,32 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        AddCrossReferenceInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /** @description Optional: The ID of the specific clause being referenced. */
+            targetClauseId?: string;
+            /** @description The ID of the section being referenced (e.g., 'section-3'). */
+            targetSectionId: string;
+            /** @description The exact text in the clause that forms the reference (e.g., 'sub-section (3)'). */
+            text: string;
+        };
+        AddMetadataInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            /** @description The definition for a jargon term. */
+            definition?: string;
+            /** @description The ID of the section being referenced. */
+            targetSectionId?: string;
+            /** @description The exact text in the clause that forms the reference. */
+            text: string;
+        };
         AdminAuthOutputBody: {
             /**
              * Format: uri
@@ -850,6 +1076,7 @@ export interface components {
             content: components["schemas"]["TranslatedString"];
             /** Format: date-time */
             createdAt: string;
+            documentReferences: string[] | null;
             id: string;
             /** Format: date-time */
             publishedAt?: string;
@@ -878,6 +1105,21 @@ export interface components {
             context?: string;
             source_document_id?: string;
             source_section_id?: string;
+        };
+        Chapter: {
+            chapter_id?: string;
+            sections?: components["schemas"]["Section"][] | null;
+            title?: string;
+        };
+        Clause: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            clause_id?: string;
+            original_text?: string;
+            word_metadata?: components["schemas"]["WordMetadata"][] | null;
         };
         CommentAuthorOutput: {
             id: string;
@@ -1012,6 +1254,17 @@ export interface components {
             /** @description The text content of the reply. */
             content: string;
         };
+        CreateTermInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            category?: string;
+            definition: components["schemas"]["TranslatedString"];
+            source?: string;
+            term: string;
+        };
         CreateUserInputBody: {
             /**
              * Format: uri
@@ -1053,7 +1306,7 @@ export interface components {
         };
         CrossReference: {
             context?: string;
-            target_document_id?: string;
+            target_clause_id?: string;
             target_section_id?: string;
         };
         DocumentStats: {
@@ -1160,7 +1413,8 @@ export interface components {
              * @description A URL to the JSON Schema for this object.
              */
             readonly $schema?: string;
-            sections?: components["schemas"]["Section"][] | null;
+            chapters?: components["schemas"]["Chapter"][] | null;
+            preamble?: string;
         };
         LoginInputBody: {
             /**
@@ -1265,12 +1519,6 @@ export interface components {
             /** Format: int64 */
             totalPages: number;
         };
-        Paragraph: {
-            original_text?: string;
-            paragraph_id?: string;
-            referenced_by?: components["schemas"]["BackLink"][] | null;
-            word_metadata?: components["schemas"]["WordMetadata"][] | null;
-        };
         ProfessionalOutputBody: {
             /**
              * Format: uri
@@ -1312,11 +1560,33 @@ export interface components {
             pageNumber: number;
             text: string;
         };
+        SearchOutputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            results: components["schemas"]["SearchResultItem"][] | null;
+        };
+        SearchResultItem: {
+            id: string;
+            /** Format: double */
+            matchScore?: number;
+            summary: string;
+            title: string;
+            type: string;
+            url: string;
+        };
         Section: {
-            heading?: string;
-            paragraphs?: components["schemas"]["Paragraph"][] | null;
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            clauses?: components["schemas"]["Clause"][] | null;
             referenced_by?: components["schemas"]["BackLink"][] | null;
             section_id?: string;
+            title?: string;
         };
         TranslatedString: {
             /** @description The content in English. */
@@ -1385,6 +1655,14 @@ export interface components {
              */
             readonly $schema?: string;
             message: string;
+        };
+        UpdateSectionTitleInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             */
+            readonly $schema?: string;
+            newTitle: string;
         };
         UserAuthOutputBody: {
             /**
@@ -1489,6 +1767,7 @@ export interface components {
             definition?: string;
             /** Format: int32 */
             end_position?: number;
+            metadata_id?: string;
             /** Format: int32 */
             start_position?: number;
             text?: string;
@@ -1782,6 +2061,72 @@ export interface operations {
             };
         };
     };
+    "get-single-article-by-id": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the article to retrieve. */
+                articleId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArticleOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "search-articles": {
+        parameters: {
+            query: {
+                /** @description The search query string. */
+                q: string;
+                /** @description The maximum number of results to return. */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "get-article-sort-options": {
         parameters: {
             query?: never;
@@ -1904,14 +2249,14 @@ export interface operations {
                 /** @description The ID of the article to link the document to. */
                 articleId: string;
                 /** @description The human-readable unique ID of the document to link. */
-                documentIdString: string;
+                documentIdStringORHexId: string;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
-            200: {
+            /** @description No Content */
+            204: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2350,6 +2695,80 @@ export interface operations {
             };
         };
     };
+    "create-dictionary-term": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Bearer token */
+                Authorization?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTermInputBody"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    Category?: string;
+                    Definition?: components["schemas"]["TranslatedString"];
+                    ID?: string;
+                    Source?: string;
+                    Term?: string;
+                    UpdatedAt?: string;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "search-dictionary-terms": {
+        parameters: {
+            query: {
+                /** @description The search query string. */
+                q: string;
+                /** @description The maximum number of results to return. */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "get-all-public-documents": {
         parameters: {
             query?: {
@@ -2479,6 +2898,40 @@ export interface operations {
             };
         };
     };
+    "search-documents": {
+        parameters: {
+            query: {
+                /** @description The search query string. */
+                q: string;
+                /** @description The maximum number of results to return. */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "get-structured-document": {
         parameters: {
             query?: {
@@ -2491,7 +2944,7 @@ export interface operations {
             };
             path: {
                 /** @description The human-readable unique ID of the document (e.g., 'constitution-of-nepal-2072'). */
-                documentIdString: string;
+                documentIdStringORHexId: string;
             };
             cookie?: never;
         };
@@ -2517,6 +2970,151 @@ export interface operations {
             };
         };
     };
+    "add-metadata": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                docId: string;
+                version: string;
+                clauseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddMetadataInputBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Clause"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "remove-metadata": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                docId: string;
+                version: string;
+                clauseId: string;
+                metaId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Clause"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "add-cross-reference": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                docId: string;
+                version: string;
+                clauseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddCrossReferenceInputBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Clause"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-section-title": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                docId: string;
+                version: string;
+                sectionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateSectionTitleInputBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Section"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "get-document-by-id": {
         parameters: {
             query?: {
@@ -2529,7 +3127,7 @@ export interface operations {
             };
             path: {
                 /** @description The human-readable unique ID of the document (e.g., 'constitution-of-nepal-2072'). */
-                documentIdString: string;
+                documentIdStringORHexId: string;
             };
             cookie?: never;
         };
@@ -2742,6 +3340,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PaginatedResponseProfessionalOutputBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "search-professionals": {
+        parameters: {
+            query: {
+                /** @description The search query string. */
+                q: string;
+                /** @description The maximum number of results to return. */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchOutputBody"];
                 };
             };
             /** @description Error */
