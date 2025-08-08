@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDocsStore } from "@/lib/docs-store";
 import { components } from "@/lib/api-types";
 import { Link } from "@/i18n/navigation";
-import { FileText, PlusCircle, RefreshCw } from "lucide-react";
+import { FileText, PlusCircle, RefreshCw, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "../ui/button";
 import { CreateDocumentModal } from "./create-document-modal";
+import { DocumentSettingsModal } from "./document-settings-modal"; // Import the new modal
+import { apiClient } from "@/lib/api";
 
 type LegalDocument = components["schemas"]["LegalDocument"];
 
@@ -72,11 +74,28 @@ export function MyDocumentList({
   const { setHoveredDocumentId } = useDocsStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [documents, setDocuments] = useState(initialDocuments);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Update local state when props change
   useEffect(() => {
     setDocuments(initialDocuments);
   }, [initialDocuments]);
+  const fetchMyDocuments = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await apiClient.getMyLegalDocuments();
+      setDocuments(response.data || []);
+    } catch (err) {
+      console.error("Failed to fetch user documents:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMyDocuments();
+  }, [fetchMyDocuments]);
 
   const handleDocumentCreated = (newDocument: LegalDocument) => {
     const updatedDocuments = [newDocument, ...documents];
@@ -99,6 +118,12 @@ export function MyDocumentList({
         onClose={() => setIsModalOpen(false)}
         onDocumentCreated={handleDocumentCreated}
       />
+      <DocumentSettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        onUpdate={fetchMyDocuments}
+      />
+
       <div className="h-full flex flex-col">
         <div className="p-4 border-b shrink-0 flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -115,6 +140,12 @@ export function MyDocumentList({
           <Button onClick={handleCreateNew}>
             <PlusCircle className="mr-2 h-4 w-4" />
             Create New
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => setIsSettingsModalOpen(true)}
+          >
+            <Settings className="mr-2 h-4 w-4" /> Manage
           </Button>
         </div>
 

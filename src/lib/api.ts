@@ -88,7 +88,21 @@ type GetAllArticlesSuccessResponse =
 type UpdateArticleStatusRequestBody =
   components["schemas"]["UpdateArticleStatusInputBody"];
 
+type UpdateDocumentStatusRequestBody =
+  components["schemas"]["UpdateDocumentStatusInputBody"];
+type UpdateDocumentStatusSuccessResponse =
+  operations["update-document-status"]["responses"][200]["content"]["application/json"];
+
 export const apiClient = {
+  updateDocumentStatus: (
+    documentId: string,
+    status: UpdateDocumentStatusRequestBody["status"]
+  ): Promise<UpdateDocumentStatusSuccessResponse> => {
+    return fetcher(`/api/v1/documents/${documentId}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
+  },
   getAllArticles: (): Promise<GetAllArticlesSuccessResponse> => {
     // This fetches all articles, including non-published ones, for admin use.
     return fetcher(`/api/v1/articles`);
