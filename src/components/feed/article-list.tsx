@@ -11,6 +11,7 @@ import {
   ArrowDown,
   FilePlus,
   Settings,
+  Eye,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { FeedFilters } from "./feed-filters";
@@ -54,6 +55,9 @@ const ArticleListItem = ({ article }: { article: Article }) => {
           </div>
           <div className="flex items-center gap-1">
             <MessageSquare size={12} /> {article.stats.commentCount}
+          </div>
+          <div className="flex items-center gap-1">
+            <Eye size={12} /> {article.stats.viewCount}
           </div>
         </div>
       </Link>

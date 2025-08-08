@@ -75,7 +75,7 @@ export function MyDocumentList({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [documents, setDocuments] = useState(initialDocuments);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   // Update local state when props change
   useEffect(() => {
@@ -83,13 +83,13 @@ export function MyDocumentList({
   }, [initialDocuments]);
   const fetchMyDocuments = useCallback(async () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       const response = await apiClient.getMyLegalDocuments();
       setDocuments(response.data || []);
     } catch (err) {
       console.error("Failed to fetch user documents:", err);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   }, []);
 
