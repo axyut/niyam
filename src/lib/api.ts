@@ -72,8 +72,75 @@ type ProcessDocumentSuccessResponse =
   operations["process-new-document"]["responses"][200]["content"]["application/json"];
 type GetMyLegalDocumentsSuccessResponse =
   operations["get-my-documents"]["responses"][200]["content"]["application/json"];
+type GetArticleCommentsSuccessResponse =
+  operations["get-article-comments"]["responses"][200]["content"]["application/json"];
+type CreateCommentRequestBody = components["schemas"]["CreateCommentInputBody"];
+type CreateCommentSuccessResponse =
+  operations["create-top-level-comment"]["responses"][201]["content"]["application/json"];
+type CreateReplyRequestBody = components["schemas"]["CreateReplyInputBody"];
+type CreateReplySuccessResponse =
+  operations["create-reply-to-comment"]["responses"][201]["content"]["application/json"];
+type CreateArticleRequestBody = components["schemas"]["CreateArticleInputBody"];
+type CreateArticleSuccessResponse =
+  operations["create-article"]["responses"][201]["content"]["application/json"];
+type GetAllArticlesSuccessResponse =
+  operations["get-all-articles"]["responses"][200]["content"]["application/json"];
+type UpdateArticleStatusRequestBody =
+  components["schemas"]["UpdateArticleStatusInputBody"];
 
 export const apiClient = {
+  getAllArticles: (): Promise<GetAllArticlesSuccessResponse> => {
+    // This fetches all articles, including non-published ones, for admin use.
+    return fetcher(`/api/v1/articles`);
+  },
+
+  updateArticleStatus: (
+    articleId: string,
+    status: UpdateArticleStatusRequestBody["status"]
+  ): Promise<void> => {
+    return fetcher(`/api/v1/articles/${articleId}/status`, {
+      method: "PUT",
+      body: JSON.stringify({ status }),
+    });
+  },
+  createArticle: (
+    data: CreateArticleRequestBody
+  ): Promise<CreateArticleSuccessResponse> => {
+    return fetcher(`/api/v1/articles`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+  getArticleComments: (
+    articleId: string,
+    page = 1,
+    limit = 10
+  ): Promise<GetArticleCommentsSuccessResponse> => {
+    return fetcher(
+      `/api/v1/articles/${articleId}/comments?page=${page}&limit=${limit}&sortBy=recent`
+    );
+  },
+
+  createComment: (
+    articleId: string,
+    data: CreateCommentRequestBody
+  ): Promise<CreateCommentSuccessResponse> => {
+    return fetcher(`/api/v1/articles/${articleId}/comments`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  createReply: (
+    commentId: string,
+    data: CreateReplyRequestBody
+  ): Promise<CreateReplySuccessResponse> => {
+    return fetcher(`/api/v1/comments/${commentId}/replies`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
   getMyLegalDocuments: (): Promise<GetMyLegalDocumentsSuccessResponse> => {
     return fetcher(`/api/v1/documents/me`);
   },

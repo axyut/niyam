@@ -4,10 +4,20 @@ import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/lib/store";
 import { components } from "@/lib/api-types";
 import { Link } from "@/i18n/navigation";
-import { Loader2, MessageSquare, ArrowUp, ArrowDown, Eye } from "lucide-react";
+import {
+  Loader2,
+  MessageSquare,
+  ArrowUp,
+  ArrowDown,
+  FilePlus,
+  Settings,
+} from "lucide-react";
 import { motion } from "framer-motion";
-import { FeedFilters } from "./feed-filters"; // Import the new component
+import { FeedFilters } from "./feed-filters";
 import { apiClient } from "@/lib/api";
+import { Button } from "../ui/button";
+import { CreateArticleModal } from "./create-article-modal";
+import { ArticleSettingsModal } from "./article-settings-modal"; // Import the new modal
 
 type Article = components["schemas"]["ArticleOutputBody"];
 type FilterType = "trending" | "recent" | "popular";
@@ -17,7 +27,6 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.07 } },
 };
-
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
   visible: { y: 0, opacity: 1 },
@@ -46,16 +55,13 @@ const ArticleListItem = ({ article }: { article: Article }) => {
           <div className="flex items-center gap-1">
             <MessageSquare size={12} /> {article.stats.commentCount}
           </div>
-          <div className="flex items-center gap-1">
-            <Eye size={12} /> {article.stats.viewCount}
-          </div>
         </div>
       </Link>
     </motion.li>
   );
 };
 
-interface ArticleListProps {
+export interface ArticleListProps {
   articles: Article[];
   setArticles: React.Dispatch<React.SetStateAction<Article[]>>;
   isLoading: boolean;
@@ -68,11 +74,14 @@ export function ArticleList({
   isLoading,
   setIsLoading,
 }: ArticleListProps) {
-  const { setHoveredArticleId } = useAuthStore();
+  const { user, setHoveredArticleId } = useAuthStore();
   const [activeFilter, setActiveFilter] = useState<FilterType>("trending");
   const [sortOrder, setSortOrder] = useState<SortOrderType>("desc");
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
-  // This effect now re-fetches data whenever the filter or sort order changes
+  const isAdmin = user && "adminname" in user;
+
   useEffect(() => {
     const fetchFeed = async () => {
       try {
@@ -93,47 +102,80 @@ export function ArticleList({
     fetchFeed();
   }, [activeFilter, sortOrder, setArticles, setIsLoading]);
 
+  const handleArticleCreated = (newArticle: Article) => {
+    setArticles((prevArticles: Article[]) => [newArticle, ...prevArticles]);
+  };
+
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-4 border-b shrink-0">
-        <FeedFilters
-          activeFilter={activeFilter}
-          setActiveFilter={setActiveFilter}
-          sortOrder={sortOrder}
-          setSortOrder={setSortOrder}
-        />
-      </div>
-      <div
-        className="flex-grow overflow-y-auto"
-        onMouseLeave={() => setHoveredArticleId(null)}
-      >
-        {isLoading ? (
-          <div className="flex items-center justify-center h-full">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+    <>
+      <CreateArticleModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onArticleCreated={handleArticleCreated}
+      />
+      <ArticleSettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+      />
+
+      <div className="h-full flex flex-col">
+        <div className="p-4 border-b shrink-0">
+          <FeedFilters
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+          />
+        </div>
+        <div
+          className="flex-grow overflow-y-auto"
+          onMouseLeave={() => setHoveredArticleId(null)}
+        >
+          {isLoading ? (
+            <div className="flex items-center justify-center h-full">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <motion.ul
+              className="space-y-2 p-4"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              key={activeFilter + sortOrder}
+            >
+              {articles.length > 0 ? (
+                articles.map((article: Article) => (
+                  <ArticleListItem key={article.id} article={article} />
+                ))
+              ) : (
+                <div className="text-center py-12">
+                  <h3 className="text-lg font-semibold">No articles found</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Try selecting a different filter.
+                  </p>
+                </div>
+              )}
+            </motion.ul>
+          )}
+        </div>
+        {isAdmin && (
+          <div className="p-4 border-t shrink-0 flex gap-2">
+            <Button
+              className="w-full"
+              onClick={() => setIsCreateModalOpen(true)}
+            >
+              <FilePlus className="mr-2 h-4 w-4" /> Create New Article
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => setIsSettingsModalOpen(true)}
+            >
+              <Settings className="mr-2 h-4 w-4" /> Manage Articles
+            </Button>
           </div>
-        ) : (
-          <motion.ul
-            className="space-y-2 p-4"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            key={activeFilter + sortOrder} // Re-trigger animation on change
-          >
-            {articles.length > 0 ? (
-              articles.map((article) => (
-                <ArticleListItem key={article.id} article={article} />
-              ))
-            ) : (
-              <div className="text-center py-12">
-                <h3 className="text-lg font-semibold">No articles found</h3>
-                <p className="text-muted-foreground text-sm">
-                  Try selecting a different filter.
-                </p>
-              </div>
-            )}
-          </motion.ul>
         )}
       </div>
-    </div>
+    </>
   );
 }
